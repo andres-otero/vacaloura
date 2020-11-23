@@ -3,26 +3,16 @@ package gal.andres.vacaloura.ticket.model;
 import java.time.LocalDateTime;
 import java.util.List;
 
-public class TicketDTO {
-  private Long id;
+public class TicketRequest {
   private String name;
+  private String description;
   private TicketType type;
   private Priority priority;
-  private LocalDateTime date;
   private LocalDateTime dueDate;
   private List<String> tags;
-  private String description;
-  private Status status;
   private String version;
-  private Integer votes;
 
-  public Long getId() {
-    return id;
-  }
-
-  public void setId(Long id) {
-    this.id = id;
-  }
+  public TicketRequest() {}
 
   public String getName() {
     return name;
@@ -30,6 +20,14 @@ public class TicketDTO {
 
   public void setName(String name) {
     this.name = name;
+  }
+
+  public String getDescription() {
+    return description;
+  }
+
+  public void setDescription(String description) {
+    this.description = description;
   }
 
   public TicketType getType() {
@@ -48,14 +46,6 @@ public class TicketDTO {
     this.priority = priority;
   }
 
-  public LocalDateTime getDate() {
-    return date;
-  }
-
-  public void setDate(LocalDateTime date) {
-    this.date = date;
-  }
-
   public LocalDateTime getDueDate() {
     return dueDate;
   }
@@ -72,22 +62,6 @@ public class TicketDTO {
     this.tags = tags;
   }
 
-  public String getDescription() {
-    return description;
-  }
-
-  public void setDescription(String description) {
-    this.description = description;
-  }
-
-  public Status getStatus() {
-    return status;
-  }
-
-  public void setStatus(Status status) {
-    this.status = status;
-  }
-
   public String getVersion() {
     return version;
   }
@@ -96,57 +70,37 @@ public class TicketDTO {
     this.version = version;
   }
 
-  public Integer getVotes() {
-    return votes;
-  }
-
-  public void setVotes(Integer votes) {
-    this.votes = votes;
-  }
-
   @Override
   public String toString() {
-    return "TicketDTO{"
-        + "id="
-        + id
-        + ", name='"
+    return "TicketRequest{"
+        + "name='"
         + name
+        + '\''
+        + ", description='"
+        + description
         + '\''
         + ", type="
         + type
         + ", priority="
         + priority
-        + ", date="
-        + date
         + ", dueDate="
         + dueDate
         + ", tags="
         + tags
-        + ", description='"
-        + description
-        + '\''
-        + ", status="
-        + status
         + ", version='"
         + version
         + '\''
-        + ", votes="
-        + votes
         + '}';
   }
 
   public static final class Builder {
-    private Long id;
     private String name;
+    private String description;
     private TicketType type;
     private Priority priority;
-    private LocalDateTime date;
     private LocalDateTime dueDate;
     private List<String> tags;
-    private String description;
-    private Status status;
     private String version;
-    private Integer votes;
 
     private Builder() {}
 
@@ -154,13 +108,13 @@ public class TicketDTO {
       return new Builder();
     }
 
-    public Builder id(Long id) {
-      this.id = id;
+    public Builder name(String name) {
+      this.name = name;
       return this;
     }
 
-    public Builder name(String name) {
-      this.name = name;
+    public Builder description(String description) {
+      this.description = description;
       return this;
     }
 
@@ -174,11 +128,6 @@ public class TicketDTO {
       return this;
     }
 
-    public Builder date(LocalDateTime date) {
-      this.date = date;
-      return this;
-    }
-
     public Builder dueDate(LocalDateTime dueDate) {
       this.dueDate = dueDate;
       return this;
@@ -189,40 +138,21 @@ public class TicketDTO {
       return this;
     }
 
-    public Builder description(String description) {
-      this.description = description;
-      return this;
-    }
-
-    public Builder status(Status status) {
-      this.status = status;
-      return this;
-    }
-
     public Builder version(String version) {
       this.version = version;
       return this;
     }
 
-    public Builder votes(Integer votes) {
-      this.votes = votes;
-      return this;
-    }
-
-    public TicketDTO build() {
-      TicketDTO ticketDTO = new TicketDTO();
-      ticketDTO.setId(id);
-      ticketDTO.setName(name);
-      ticketDTO.setType(type);
-      ticketDTO.setPriority(priority);
-      ticketDTO.setDate(date);
-      ticketDTO.setDueDate(dueDate);
-      ticketDTO.setTags(tags);
-      ticketDTO.setDescription(description);
-      ticketDTO.setStatus(status);
-      ticketDTO.setVersion(version);
-      ticketDTO.setVotes(votes);
-      return ticketDTO;
+    public TicketRequest build() {
+      TicketRequest ticketRequest = new TicketRequest();
+      ticketRequest.setName(name);
+      ticketRequest.setDescription(description);
+      ticketRequest.setType(type);
+      ticketRequest.setPriority(priority);
+      ticketRequest.setDueDate(dueDate);
+      ticketRequest.setTags(tags);
+      ticketRequest.setVersion(version);
+      return ticketRequest;
     }
   }
 }

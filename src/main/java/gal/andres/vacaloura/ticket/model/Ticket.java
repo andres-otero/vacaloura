@@ -1,10 +1,18 @@
 package gal.andres.vacaloura.ticket.model;
 
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
 import java.time.LocalDateTime;
 import java.util.List;
 
-public class TicketDTO {
+@Entity
+public class Ticket {
+  @Id
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Long id;
+
   private String name;
   private TicketType type;
   private Priority priority;
@@ -15,6 +23,31 @@ public class TicketDTO {
   private Status status;
   private String version;
   private Integer votes;
+
+  public Ticket(
+      Long id,
+      String name,
+      TicketType type,
+      Priority priority,
+      LocalDateTime date,
+      LocalDateTime dueDate,
+      List<String> tags,
+      String description,
+      Status status,
+      String version,
+      Integer votes) {
+    this.id = id;
+    this.name = name;
+    this.type = type;
+    this.priority = priority;
+    this.date = date;
+    this.dueDate = dueDate;
+    this.tags = tags;
+    this.description = description;
+    this.status = status;
+    this.version = version;
+    this.votes = votes;
+  }
 
   public Long getId() {
     return id;
@@ -106,7 +139,7 @@ public class TicketDTO {
 
   @Override
   public String toString() {
-    return "TicketDTO{"
+    return "Ticket{"
         + "id="
         + id
         + ", name='"
@@ -209,20 +242,9 @@ public class TicketDTO {
       return this;
     }
 
-    public TicketDTO build() {
-      TicketDTO ticketDTO = new TicketDTO();
-      ticketDTO.setId(id);
-      ticketDTO.setName(name);
-      ticketDTO.setType(type);
-      ticketDTO.setPriority(priority);
-      ticketDTO.setDate(date);
-      ticketDTO.setDueDate(dueDate);
-      ticketDTO.setTags(tags);
-      ticketDTO.setDescription(description);
-      ticketDTO.setStatus(status);
-      ticketDTO.setVersion(version);
-      ticketDTO.setVotes(votes);
-      return ticketDTO;
+    public Ticket build() {
+      return new Ticket(
+          id, name, type, priority, date, dueDate, tags, description, status, version, votes);
     }
   }
 }
