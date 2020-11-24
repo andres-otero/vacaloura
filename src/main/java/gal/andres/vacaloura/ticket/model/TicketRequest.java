@@ -1,5 +1,6 @@
 package gal.andres.vacaloura.ticket.model;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -8,6 +9,7 @@ public class TicketRequest {
   private String description;
   private TicketType type;
   private Priority priority;
+  @JsonFormat(pattern = "dd/MM/yyyy HH:mm:ss")
   private LocalDateTime dueDate;
   private List<String> tags;
   private String version;

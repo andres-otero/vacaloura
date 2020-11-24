@@ -1,28 +1,26 @@
 package gal.andres.vacaloura.ticket.model;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
 import java.time.LocalDateTime;
 import java.util.List;
 
 @Entity
+@Table(name = "ticket")
 public class Ticket {
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Long id;
 
-  private String name;
-  private TicketType type;
-  private Priority priority;
-  private LocalDateTime date;
-  private LocalDateTime dueDate;
-  private List<String> tags;
-  private String description;
-  private Status status;
-  private String version;
-  private Integer votes;
+  @Column private String name;
+  @Column private TicketType type;
+  @Column private Priority priority;
+  @Column private LocalDateTime date;
+  @Column(name = "due_date") private LocalDateTime dueDate;
+  @Column @ElementCollection private List<String> tags;
+  @Column private String description;
+  @Column private Status status;
+  @Column private String version;
+  @Column private Integer votes;
 
   public Ticket(
       Long id,
@@ -48,6 +46,8 @@ public class Ticket {
     this.version = version;
     this.votes = votes;
   }
+
+  public Ticket() {}
 
   public Long getId() {
     return id;

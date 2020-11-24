@@ -22,7 +22,5 @@ public class TicketService implements TicketServiceInterface {
     Ticket ticket = TicketMapper.requestToTicket(request);
     ticketRepository.save(ticket);
     return TicketMapper.ticketToDTO(ticket);
-
-
   }
 }
