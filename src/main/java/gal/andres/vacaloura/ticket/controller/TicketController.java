@@ -14,7 +14,6 @@ import java.net.URI;
 
 @RestController
 @RequestMapping("/tickets")
-@Api(value = "ticket-controller", )
 public class TicketController {
   private final TicketService ticketService;
 
