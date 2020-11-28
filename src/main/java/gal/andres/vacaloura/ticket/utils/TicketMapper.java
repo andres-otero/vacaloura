@@ -3,13 +3,13 @@ package gal.andres.vacaloura.ticket.utils;
 import gal.andres.vacaloura.ticket.model.Status;
 import gal.andres.vacaloura.ticket.model.Ticket;
 import gal.andres.vacaloura.ticket.model.TicketDTO;
-import gal.andres.vacaloura.ticket.model.TicketRequest;
+import gal.andres.vacaloura.ticket.model.request.NewTicketRequest;
 
 import java.time.LocalDateTime;
 
 public class TicketMapper {
 
-  public static Ticket requestToTicket(TicketRequest request){
+  public static Ticket requestToTicket(NewTicketRequest request){
     return Ticket.Builder.builder()
         .name(request.getName())
         .description(request.getDescription())

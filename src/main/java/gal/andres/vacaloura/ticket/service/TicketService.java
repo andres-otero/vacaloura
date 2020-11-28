@@ -1,7 +1,7 @@
 package gal.andres.vacaloura.ticket.service;
 
 import gal.andres.vacaloura.ticket.model.TicketDTO;
-import gal.andres.vacaloura.ticket.model.TicketRequest;
+import gal.andres.vacaloura.ticket.model.request.NewTicketRequest;
 
 /**
  * Provides a set of operations related to ticket's management
@@ -14,5 +14,5 @@ public interface TicketService {
    * @param request Ticket request to process
    * @return {@link TicketDTO} The created ticket
    */
-  public TicketDTO createTicket(TicketRequest request);
+  public TicketDTO createTicket(NewTicketRequest request);
 }

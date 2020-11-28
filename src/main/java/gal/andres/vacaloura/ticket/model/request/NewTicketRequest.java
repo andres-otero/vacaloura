@@ -1,10 +1,13 @@
-package gal.andres.vacaloura.ticket.model;
+package gal.andres.vacaloura.ticket.model.request;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import gal.andres.vacaloura.ticket.model.Priority;
+import gal.andres.vacaloura.ticket.model.TicketType;
+
 import java.time.LocalDateTime;
 import java.util.List;
 
-public class TicketRequest {
+public class NewTicketRequest {
   private String name;
   private String description;
   private TicketType type;
@@ -14,7 +17,7 @@ public class TicketRequest {
   private List<String> tags;
   private String version;
 
-  public TicketRequest() {}
+  public NewTicketRequest() {}
 
   public String getName() {
     return name;
@@ -145,16 +148,16 @@ public class TicketRequest {
       return this;
     }
 
-    public TicketRequest build() {
-      TicketRequest ticketRequest = new TicketRequest();
-      ticketRequest.setName(name);
-      ticketRequest.setDescription(description);
-      ticketRequest.setType(type);
-      ticketRequest.setPriority(priority);
-      ticketRequest.setDueDate(dueDate);
-      ticketRequest.setTags(tags);
-      ticketRequest.setVersion(version);
-      return ticketRequest;
+    public NewTicketRequest build() {
+      NewTicketRequest newTicketRequest = new NewTicketRequest();
+      newTicketRequest.setName(name);
+      newTicketRequest.setDescription(description);
+      newTicketRequest.setType(type);
+      newTicketRequest.setPriority(priority);
+      newTicketRequest.setDueDate(dueDate);
+      newTicketRequest.setTags(tags);
+      newTicketRequest.setVersion(version);
+      return newTicketRequest;
     }
   }
 }
