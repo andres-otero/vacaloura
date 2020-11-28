@@ -2,6 +2,7 @@ package gal.andres.vacaloura.ticket.controller;
 
 import gal.andres.vacaloura.ticket.model.TicketDTO;
 import gal.andres.vacaloura.ticket.model.request.NewTicketRequest;
+import gal.andres.vacaloura.ticket.model.request.UpdateTicketRequest;
 import gal.andres.vacaloura.ticket.service.TicketService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -27,5 +28,10 @@ public class TicketController {
     return response;
   }
 
-
+  @PutMapping("/{id}")
+  public ResponseEntity updateTicket(
+      @PathVariable("id") Long id, UpdateTicketRequest updateTicketRequest) {
+    ticketService.updateTicket(id, updateTicketRequest);
+    return ResponseEntity.noContent().build();
+  }
 }

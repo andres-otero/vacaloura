@@ -2,10 +2,9 @@ package gal.andres.vacaloura.ticket.service;
 
 import gal.andres.vacaloura.ticket.model.TicketDTO;
 import gal.andres.vacaloura.ticket.model.request.NewTicketRequest;
+import gal.andres.vacaloura.ticket.model.request.UpdateTicketRequest;
 
-/**
- * Provides a set of operations related to ticket's management
- */
+/** Provides a set of operations related to ticket's management */
 public interface TicketService {
 
   /**
@@ -15,4 +14,6 @@ public interface TicketService {
    * @return {@link TicketDTO} The created ticket
    */
   public TicketDTO createTicket(NewTicketRequest request);
+
+  public void updateTicket(Long ticketId, UpdateTicketRequest request);
 }
