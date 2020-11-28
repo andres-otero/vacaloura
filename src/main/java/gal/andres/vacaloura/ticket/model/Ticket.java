@@ -15,7 +15,10 @@ public class Ticket {
   @Column private TicketType type;
   @Column private Priority priority;
   @Column private LocalDateTime date;
-  @Column(name = "due_date") private LocalDateTime dueDate;
+
+  @Column(name = "due_date")
+  private LocalDateTime dueDate;
+
   @Column @ElementCollection private List<String> tags;
   @Column private String description;
   @Column private Status status;

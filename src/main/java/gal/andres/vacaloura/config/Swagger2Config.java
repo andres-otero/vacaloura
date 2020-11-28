@@ -29,7 +29,8 @@ public class Swagger2Config {
         .description("\"Simple bug tracker API\"")
         .version("1.0.0")
         .license("MIT License")
-        .contact(new Contact("Andres Otero Carballal", "https://www.andres.gal", "aotercarb@gmail.com"))
+        .contact(
+            new Contact("Andres Otero Carballal", "https://www.andres.gal", "aotercarb@gmail.com"))
         .build();
   }
 }
