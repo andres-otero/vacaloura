@@ -7,5 +7,4 @@ public interface TicketRepository extends JpaRepository<Ticket, Long> {
 
   public Ticket save(Ticket ticket);
 
-  public Ticket findTicketById(Long id);
 }

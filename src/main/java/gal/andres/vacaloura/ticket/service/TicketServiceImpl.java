@@ -9,6 +9,8 @@ import gal.andres.vacaloura.ticket.utils.TicketMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Optional;
+
 @Service
 public class TicketServiceImpl implements TicketService {
   private final TicketRepository ticketRepository;
@@ -27,9 +29,13 @@ public class TicketServiceImpl implements TicketService {
 
   @Override
   public void updateTicket(Long ticketId, UpdateTicketRequest request) {
-    Ticket ticket = ticketRepository.findTicketById(ticketId);
-    this.updateTicketFields(ticket, request);
-    ticketRepository.save(ticket);
+    Optional<Ticket> ticket = ticketRepository.findById(ticketId);
+    if (ticket.isPresent()) {
+      this.updateTicketFields(ticket.get(), request);
+      ticketRepository.save(ticket.get());
+    } else {
+      throw new IllegalArgumentException("Ticket not found");
+    }
   }
 
   public void updateTicketFields(Ticket ticket, UpdateTicketRequest request) {
