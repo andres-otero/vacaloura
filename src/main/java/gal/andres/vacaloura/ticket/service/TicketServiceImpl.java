@@ -37,4 +37,13 @@ public class TicketServiceImpl implements TicketService {
       throw new IllegalArgumentException("Ticket not found");
     }
   }
+
+  @Override
+  public void deleteTicket(Long ticketId) {
+    if (ticketRepository.existsById(ticketId)) {
+      ticketRepository.deleteById(ticketId);
+    } else {
+      throw new IllegalArgumentException("Ticket not found");
+    }
+  }
 }

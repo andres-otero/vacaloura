@@ -17,8 +17,16 @@ public interface TicketService {
 
   /**
    * Updates an existing ticket in the database
+   *
    * @param ticketId Id of the ticket that will be updated
    * @param request {@link UpdateTicketRequest} New information to update the ticket
    */
   public void updateTicket(Long ticketId, UpdateTicketRequest request);
+
+  /**
+   * Delete an existing ticket in the database
+   *
+   * @param ticketId id of the ticket to be deleted
+   */
+  public void deleteTicket(Long ticketId);
 }
