@@ -31,21 +31,10 @@ public class TicketServiceImpl implements TicketService {
   public void updateTicket(Long ticketId, UpdateTicketRequest request) {
     Optional<Ticket> ticket = ticketRepository.findById(ticketId);
     if (ticket.isPresent()) {
-      this.updateTicketFields(ticket.get(), request);
+      ticket.get().update(request);
       ticketRepository.save(ticket.get());
     } else {
       throw new IllegalArgumentException("Ticket not found");
     }
-  }
-
-  public void updateTicketFields(Ticket ticket, UpdateTicketRequest request) {
-    ticket.setName(request.getName());
-    ticket.setDescription(request.getDescription());
-    ticket.setStatus(request.getStatus());
-    ticket.setPriority(request.getPriority());
-    ticket.setTags(request.getTags());
-    ticket.setDueDate(request.getDueDate());
-    ticket.setType(request.getType());
-    ticket.setVersion(request.getVersion());
   }
 }

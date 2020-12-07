@@ -1,5 +1,7 @@
 package gal.andres.vacaloura.ticket.model;
 
+import gal.andres.vacaloura.ticket.model.request.UpdateTicketRequest;
+
 import javax.persistence.*;
 import java.time.LocalDateTime;
 import java.util.List;
@@ -249,5 +251,16 @@ public class Ticket {
       return new Ticket(
           id, name, type, priority, date, dueDate, tags, description, status, version, votes);
     }
+  }
+
+  public void update(UpdateTicketRequest request) {
+    this.setName(request.getName());
+    this.setDescription(request.getDescription());
+    this.setStatus(request.getStatus());
+    this.setPriority(request.getPriority());
+    this.setTags(request.getTags());
+    this.setDueDate(request.getDueDate());
+    this.setType(request.getType());
+    this.setVersion(request.getVersion());
   }
 }
