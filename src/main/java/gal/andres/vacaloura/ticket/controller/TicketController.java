@@ -1,6 +1,9 @@
 package gal.andres.vacaloura.ticket.controller;
 
+import gal.andres.vacaloura.ticket.model.Priority;
+import gal.andres.vacaloura.ticket.model.Status;
 import gal.andres.vacaloura.ticket.model.TicketDTO;
+import gal.andres.vacaloura.ticket.model.TicketType;
 import gal.andres.vacaloura.ticket.model.request.NewTicketRequest;
 import gal.andres.vacaloura.ticket.model.request.UpdateTicketRequest;
 import gal.andres.vacaloura.ticket.service.TicketService;
@@ -9,6 +12,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.net.URI;
+import java.util.List;
 
 @RestController
 @RequestMapping("/tickets")
@@ -20,12 +24,28 @@ public class TicketController {
     this.ticketService = ticketService;
   }
 
+  @GetMapping
+  public ResponseEntity<List<TicketDTO>> getTickets(
+      @RequestParam(required = false) TicketType type,
+      @RequestParam(required = false) Priority priority,
+      @RequestParam(required = false) String tag,
+      @RequestParam(required = false) Status status,
+      @RequestParam(required = false) String sort) {
+    List<TicketDTO> tickets = ticketService.getTickets(type, priority, tag, status, sort);
+    return ResponseEntity.ok().body(tickets);
+  }
+
+  @GetMapping("/{id}")
+  public ResponseEntity<TicketDTO> getTicket(@PathVariable long id) {
+    TicketDTO ticket = ticketService.getTicket(id);
+    return ResponseEntity.ok().body(ticket);
+  }
+
   @PostMapping
   public ResponseEntity<TicketDTO> createTicket(@RequestBody NewTicketRequest newTicketRequest) {
     TicketDTO ticket = ticketService.createTicket(newTicketRequest);
     URI location = URI.create("/tickets/" + ticket.getId());
-    ResponseEntity response = ResponseEntity.created(location).body(ticket);
-    return response;
+    return ResponseEntity.created(location).body(ticket);
   }
 
   @PutMapping("/{id}")
