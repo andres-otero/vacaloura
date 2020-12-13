@@ -143,6 +143,43 @@ public class Ticket {
   }
 
   @Override
+  public boolean equals(Object o) {
+    if (this == o) return true;
+    if (o == null || getClass() != o.getClass()) return false;
+
+    Ticket ticket = (Ticket) o;
+
+    if (id != null ? !id.equals(ticket.id) : ticket.id != null) return false;
+    if (name != null ? !name.equals(ticket.name) : ticket.name != null) return false;
+    if (type != ticket.type) return false;
+    if (priority != ticket.priority) return false;
+    if (date != null ? !date.equals(ticket.date) : ticket.date != null) return false;
+    if (dueDate != null ? !dueDate.equals(ticket.dueDate) : ticket.dueDate != null) return false;
+    if (tags != null ? !tags.equals(ticket.tags) : ticket.tags != null) return false;
+    if (description != null ? !description.equals(ticket.description) : ticket.description != null)
+      return false;
+    if (status != ticket.status) return false;
+    if (version != null ? !version.equals(ticket.version) : ticket.version != null) return false;
+    return votes != null ? votes.equals(ticket.votes) : ticket.votes == null;
+  }
+
+  @Override
+  public int hashCode() {
+    int result = id != null ? id.hashCode() : 0;
+    result = 31 * result + (name != null ? name.hashCode() : 0);
+    result = 31 * result + (type != null ? type.hashCode() : 0);
+    result = 31 * result + (priority != null ? priority.hashCode() : 0);
+    result = 31 * result + (date != null ? date.hashCode() : 0);
+    result = 31 * result + (dueDate != null ? dueDate.hashCode() : 0);
+    result = 31 * result + (tags != null ? tags.hashCode() : 0);
+    result = 31 * result + (description != null ? description.hashCode() : 0);
+    result = 31 * result + (status != null ? status.hashCode() : 0);
+    result = 31 * result + (version != null ? version.hashCode() : 0);
+    result = 31 * result + (votes != null ? votes.hashCode() : 0);
+    return result;
+  }
+
+  @Override
   public String toString() {
     return "Ticket{"
         + "id="

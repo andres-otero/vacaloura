@@ -105,6 +105,46 @@ public class TicketDTO {
   }
 
   @Override
+  public boolean equals(Object o) {
+    if (this == o) return true;
+    if (o == null || getClass() != o.getClass()) return false;
+
+    TicketDTO ticketDTO = (TicketDTO) o;
+
+    if (id != null ? !id.equals(ticketDTO.id) : ticketDTO.id != null) return false;
+    if (name != null ? !name.equals(ticketDTO.name) : ticketDTO.name != null) return false;
+    if (type != ticketDTO.type) return false;
+    if (priority != ticketDTO.priority) return false;
+    if (date != null ? !date.equals(ticketDTO.date) : ticketDTO.date != null) return false;
+    if (dueDate != null ? !dueDate.equals(ticketDTO.dueDate) : ticketDTO.dueDate != null)
+      return false;
+    if (tags != null ? !tags.equals(ticketDTO.tags) : ticketDTO.tags != null) return false;
+    if (description != null
+        ? !description.equals(ticketDTO.description)
+        : ticketDTO.description != null) return false;
+    if (status != ticketDTO.status) return false;
+    if (version != null ? !version.equals(ticketDTO.version) : ticketDTO.version != null)
+      return false;
+    return votes != null ? votes.equals(ticketDTO.votes) : ticketDTO.votes == null;
+  }
+
+  @Override
+  public int hashCode() {
+    int result = id != null ? id.hashCode() : 0;
+    result = 31 * result + (name != null ? name.hashCode() : 0);
+    result = 31 * result + (type != null ? type.hashCode() : 0);
+    result = 31 * result + (priority != null ? priority.hashCode() : 0);
+    result = 31 * result + (date != null ? date.hashCode() : 0);
+    result = 31 * result + (dueDate != null ? dueDate.hashCode() : 0);
+    result = 31 * result + (tags != null ? tags.hashCode() : 0);
+    result = 31 * result + (description != null ? description.hashCode() : 0);
+    result = 31 * result + (status != null ? status.hashCode() : 0);
+    result = 31 * result + (version != null ? version.hashCode() : 0);
+    result = 31 * result + (votes != null ? votes.hashCode() : 0);
+    return result;
+  }
+
+  @Override
   public String toString() {
     return "TicketDTO{"
         + "id="
