@@ -48,6 +48,13 @@ public class TicketController {
     return ResponseEntity.created(location).body(ticket);
   }
 
+  @PostMapping("{id}/votes")
+  public ResponseEntity<Integer> voteTicket(@PathVariable long id) {
+    Integer votes = ticketService.voteTicket(id);
+    URI location = URI.create("/tickets/" + id + "/votes");
+    return ResponseEntity.created(location).body(votes);
+  }
+
   @PutMapping("/{id}")
   public ResponseEntity updateTicket(
       @PathVariable long id, @RequestBody UpdateTicketRequest updateTicketRequest) {
@@ -58,6 +65,12 @@ public class TicketController {
   @DeleteMapping("/{id}")
   public ResponseEntity deleteTicket(@PathVariable long id) {
     ticketService.deleteTicket(id);
+    return ResponseEntity.noContent().build();
+  }
+
+  @DeleteMapping("/{id}/votes")
+  public ResponseEntity deleteVoteTicket(@PathVariable long id) {
+    ticketService.deleteTicketVote(id);
     return ResponseEntity.noContent().build();
   }
 }

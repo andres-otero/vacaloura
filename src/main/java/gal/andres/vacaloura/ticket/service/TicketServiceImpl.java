@@ -61,4 +61,19 @@ public class TicketServiceImpl implements TicketService {
       throw new IllegalArgumentException("Ticket not found");
     }
   }
+
+  @Override
+  public Integer voteTicket(Long ticketId) { // TODO Establish one vote for user and ticket
+    Ticket ticket = ticketRepository.findById(ticketId).orElseThrow(IllegalArgumentException::new);
+    ticket.setVotes(ticket.getVotes() + 1);
+    ticketRepository.save(ticket);
+    return ticket.getVotes();
+  }
+
+  @Override
+  public void deleteTicketVote(Long ticketId) { // TODO One downvote for user and ticket
+    Ticket ticket = ticketRepository.findById(ticketId).orElseThrow(IllegalArgumentException::new);
+    ticket.setVotes(ticket.getVotes() - 1);
+    ticketRepository.save(ticket);
+  }
 }

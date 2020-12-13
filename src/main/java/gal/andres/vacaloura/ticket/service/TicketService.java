@@ -8,13 +8,13 @@ import gal.andres.vacaloura.ticket.model.request.NewTicketRequest;
 import gal.andres.vacaloura.ticket.model.request.UpdateTicketRequest;
 
 import java.util.List;
-import java.util.Optional;
 
 /** Provides a set of operations related to ticket's management */
 public interface TicketService {
 
   /**
    * Gets the tickets that follow the criteria indicated by the parameters
+   *
    * @param ticketType Ticket type to filter the results
    * @param priority Priority to filter the results
    * @param tag Tags to filter the results
@@ -23,11 +23,7 @@ public interface TicketService {
    * @return {@link List<TicketDTO>} Tickets retrieved from the database that fit the criteria
    */
   public List<TicketDTO> getTickets(
-      TicketType ticketType,
-      Priority priority,
-      String tag,
-      Status status,
-      String sort);
+      TicketType ticketType, Priority priority, String tag, Status status, String sort);
 
   /**
    * Gets a ticket with a given id
@@ -59,4 +55,19 @@ public interface TicketService {
    * @param ticketId id of the ticket to be deleted
    */
   public void deleteTicket(Long ticketId);
+
+  /**
+   * Add a vote to a ticket
+   *
+   * @param ticketId Id of the ticket
+   * @return Number of ticket votes
+   */
+  public Integer voteTicket(Long ticketId);
+
+  /**
+   * Deletes a vote from a ticket
+   *
+   * @param ticketId Id of the ticket
+   */
+  public void deleteTicketVote(Long ticketId);
 }
