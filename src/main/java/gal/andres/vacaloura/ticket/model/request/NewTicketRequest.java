@@ -18,6 +18,7 @@ public class NewTicketRequest {
 
   private List<String> tags;
   private String version;
+  private String stepsReproduction;
 
   public NewTicketRequest() {}
 
@@ -77,9 +78,17 @@ public class NewTicketRequest {
     this.version = version;
   }
 
+  public String getStepsReproduction() {
+    return stepsReproduction;
+  }
+
+  public void setStepsReproduction(String stepsReproduction) {
+    this.stepsReproduction = stepsReproduction;
+  }
+
   @Override
   public String toString() {
-    return "TicketRequest{"
+    return "NewTicketRequest{"
         + "name='"
         + name
         + '\''
@@ -97,6 +106,9 @@ public class NewTicketRequest {
         + ", version='"
         + version
         + '\''
+        + ", stepsReproduction='"
+        + stepsReproduction
+        + '\''
         + '}';
   }
 
@@ -108,6 +120,7 @@ public class NewTicketRequest {
     private LocalDateTime dueDate;
     private List<String> tags;
     private String version;
+    private String stepsReproduction;
 
     private Builder() {}
 
@@ -150,6 +163,11 @@ public class NewTicketRequest {
       return this;
     }
 
+    public Builder stepsReproduction(String stepsReproduction) {
+      this.stepsReproduction = stepsReproduction;
+      return this;
+    }
+
     public NewTicketRequest build() {
       NewTicketRequest newTicketRequest = new NewTicketRequest();
       newTicketRequest.setName(name);
@@ -159,6 +177,7 @@ public class NewTicketRequest {
       newTicketRequest.setDueDate(dueDate);
       newTicketRequest.setTags(tags);
       newTicketRequest.setVersion(version);
+      newTicketRequest.setStepsReproduction(stepsReproduction);
       return newTicketRequest;
     }
   }

@@ -1,7 +1,5 @@
 package gal.andres.vacaloura.ticket.model;
 
-import gal.andres.vacaloura.ticket.model.request.UpdateTicketRequest;
-
 import javax.persistence.*;
 import java.time.LocalDateTime;
 import java.util.List;
@@ -26,6 +24,7 @@ public class Ticket {
   @Column private Status status;
   @Column private String version;
   @Column private Integer votes;
+  @Column private String stepsReproduction;
 
   public Ticket(
       Long id,
@@ -38,7 +37,8 @@ public class Ticket {
       String description,
       Status status,
       String version,
-      Integer votes) {
+      Integer votes,
+      String stepsReproduction) {
     this.id = id;
     this.name = name;
     this.type = type;
@@ -50,6 +50,7 @@ public class Ticket {
     this.status = status;
     this.version = version;
     this.votes = votes;
+    this.stepsReproduction = stepsReproduction;
   }
 
   public Ticket() {}
@@ -142,41 +143,12 @@ public class Ticket {
     this.votes = votes;
   }
 
-  @Override
-  public boolean equals(Object o) {
-    if (this == o) return true;
-    if (o == null || getClass() != o.getClass()) return false;
-
-    Ticket ticket = (Ticket) o;
-
-    if (id != null ? !id.equals(ticket.id) : ticket.id != null) return false;
-    if (name != null ? !name.equals(ticket.name) : ticket.name != null) return false;
-    if (type != ticket.type) return false;
-    if (priority != ticket.priority) return false;
-    if (date != null ? !date.equals(ticket.date) : ticket.date != null) return false;
-    if (dueDate != null ? !dueDate.equals(ticket.dueDate) : ticket.dueDate != null) return false;
-    if (tags != null ? !tags.equals(ticket.tags) : ticket.tags != null) return false;
-    if (description != null ? !description.equals(ticket.description) : ticket.description != null)
-      return false;
-    if (status != ticket.status) return false;
-    if (version != null ? !version.equals(ticket.version) : ticket.version != null) return false;
-    return votes != null ? votes.equals(ticket.votes) : ticket.votes == null;
+  public String getStepsReproduction() {
+    return stepsReproduction;
   }
 
-  @Override
-  public int hashCode() {
-    int result = id != null ? id.hashCode() : 0;
-    result = 31 * result + (name != null ? name.hashCode() : 0);
-    result = 31 * result + (type != null ? type.hashCode() : 0);
-    result = 31 * result + (priority != null ? priority.hashCode() : 0);
-    result = 31 * result + (date != null ? date.hashCode() : 0);
-    result = 31 * result + (dueDate != null ? dueDate.hashCode() : 0);
-    result = 31 * result + (tags != null ? tags.hashCode() : 0);
-    result = 31 * result + (description != null ? description.hashCode() : 0);
-    result = 31 * result + (status != null ? status.hashCode() : 0);
-    result = 31 * result + (version != null ? version.hashCode() : 0);
-    result = 31 * result + (votes != null ? votes.hashCode() : 0);
-    return result;
+  public void setStepsReproduction(String stepsReproduction) {
+    this.stepsReproduction = stepsReproduction;
   }
 
   @Override
@@ -207,7 +179,51 @@ public class Ticket {
         + '\''
         + ", votes="
         + votes
+        + ", stepsReproduction='"
+        + stepsReproduction
+        + '\''
         + '}';
+  }
+
+  @Override
+  public boolean equals(Object o) {
+    if (this == o) return true;
+    if (o == null || getClass() != o.getClass()) return false;
+
+    Ticket ticket = (Ticket) o;
+
+    if (id != null ? !id.equals(ticket.id) : ticket.id != null) return false;
+    if (name != null ? !name.equals(ticket.name) : ticket.name != null) return false;
+    if (type != ticket.type) return false;
+    if (priority != ticket.priority) return false;
+    if (date != null ? !date.equals(ticket.date) : ticket.date != null) return false;
+    if (dueDate != null ? !dueDate.equals(ticket.dueDate) : ticket.dueDate != null) return false;
+    if (tags != null ? !tags.equals(ticket.tags) : ticket.tags != null) return false;
+    if (description != null ? !description.equals(ticket.description) : ticket.description != null)
+      return false;
+    if (status != ticket.status) return false;
+    if (version != null ? !version.equals(ticket.version) : ticket.version != null) return false;
+    if (votes != null ? !votes.equals(ticket.votes) : ticket.votes != null) return false;
+    return stepsReproduction != null
+        ? stepsReproduction.equals(ticket.stepsReproduction)
+        : ticket.stepsReproduction == null;
+  }
+
+  @Override
+  public int hashCode() {
+    int result = id != null ? id.hashCode() : 0;
+    result = 31 * result + (name != null ? name.hashCode() : 0);
+    result = 31 * result + (type != null ? type.hashCode() : 0);
+    result = 31 * result + (priority != null ? priority.hashCode() : 0);
+    result = 31 * result + (date != null ? date.hashCode() : 0);
+    result = 31 * result + (dueDate != null ? dueDate.hashCode() : 0);
+    result = 31 * result + (tags != null ? tags.hashCode() : 0);
+    result = 31 * result + (description != null ? description.hashCode() : 0);
+    result = 31 * result + (status != null ? status.hashCode() : 0);
+    result = 31 * result + (version != null ? version.hashCode() : 0);
+    result = 31 * result + (votes != null ? votes.hashCode() : 0);
+    result = 31 * result + (stepsReproduction != null ? stepsReproduction.hashCode() : 0);
+    return result;
   }
 
   public static final class Builder {
@@ -222,6 +238,7 @@ public class Ticket {
     private Status status;
     private String version;
     private Integer votes;
+    private String stepsReproduction;
 
     private Builder() {}
 
@@ -284,20 +301,26 @@ public class Ticket {
       return this;
     }
 
-    public Ticket build() {
-      return new Ticket(
-          id, name, type, priority, date, dueDate, tags, description, status, version, votes);
+    public Builder stepsReproduction(String stepsReproduction) {
+      this.stepsReproduction = stepsReproduction;
+      return this;
     }
-  }
 
-  public void update(UpdateTicketRequest request) {
-    this.setName(request.getName());
-    this.setDescription(request.getDescription());
-    this.setStatus(request.getStatus());
-    this.setPriority(request.getPriority());
-    this.setTags(request.getTags());
-    this.setDueDate(request.getDueDate());
-    this.setType(request.getType());
-    this.setVersion(request.getVersion());
+    public Ticket build() {
+      Ticket ticket = new Ticket();
+      ticket.setId(id);
+      ticket.setName(name);
+      ticket.setType(type);
+      ticket.setPriority(priority);
+      ticket.setDate(date);
+      ticket.setDueDate(dueDate);
+      ticket.setTags(tags);
+      ticket.setDescription(description);
+      ticket.setStatus(status);
+      ticket.setVersion(version);
+      ticket.setVotes(votes);
+      ticket.setStepsReproduction(stepsReproduction);
+      return ticket;
+    }
   }
 }

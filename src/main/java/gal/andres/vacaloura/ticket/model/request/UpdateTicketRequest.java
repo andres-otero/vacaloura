@@ -16,6 +16,7 @@ public class UpdateTicketRequest {
   private List<String> tags;
   private String version;
   private Status status;
+  private String stepsReproduction;
 
   @JsonFormat(pattern = "dd/MM/yyyy HH:mm:ss")
   private LocalDateTime dueDate;
@@ -84,6 +85,14 @@ public class UpdateTicketRequest {
     this.status = status;
   }
 
+  public String getStepsReproduction() {
+    return stepsReproduction;
+  }
+
+  public void setStepsReproduction(String stepsReproduction) {
+    this.stepsReproduction = stepsReproduction;
+  }
+
   @Override
   public String toString() {
     return "UpdateTicketRequest{"
@@ -97,8 +106,6 @@ public class UpdateTicketRequest {
         + type
         + ", priority="
         + priority
-        + ", dueDate="
-        + dueDate
         + ", tags="
         + tags
         + ", version='"
@@ -106,6 +113,11 @@ public class UpdateTicketRequest {
         + '\''
         + ", status="
         + status
+        + ", stepsReproduction='"
+        + stepsReproduction
+        + '\''
+        + ", dueDate="
+        + dueDate
         + '}';
   }
 
@@ -114,10 +126,11 @@ public class UpdateTicketRequest {
     private String description;
     private TicketType type;
     private Priority priority;
-    private LocalDateTime dueDate;
     private List<String> tags;
     private String version;
     private Status status;
+    private String stepsReproduction;
+    private LocalDateTime dueDate;
 
     private Builder() {}
 
@@ -145,11 +158,6 @@ public class UpdateTicketRequest {
       return this;
     }
 
-    public Builder dueDate(LocalDateTime dueDate) {
-      this.dueDate = dueDate;
-      return this;
-    }
-
     public Builder tags(List<String> tags) {
       this.tags = tags;
       return this;
@@ -165,16 +173,27 @@ public class UpdateTicketRequest {
       return this;
     }
 
+    public Builder stepsReproduction(String stepsReproduction) {
+      this.stepsReproduction = stepsReproduction;
+      return this;
+    }
+
+    public Builder dueDate(LocalDateTime dueDate) {
+      this.dueDate = dueDate;
+      return this;
+    }
+
     public UpdateTicketRequest build() {
       UpdateTicketRequest updateTicketRequest = new UpdateTicketRequest();
       updateTicketRequest.setName(name);
       updateTicketRequest.setDescription(description);
       updateTicketRequest.setType(type);
       updateTicketRequest.setPriority(priority);
-      updateTicketRequest.setDueDate(dueDate);
       updateTicketRequest.setTags(tags);
       updateTicketRequest.setVersion(version);
       updateTicketRequest.setStatus(status);
+      updateTicketRequest.setStepsReproduction(stepsReproduction);
+      updateTicketRequest.setDueDate(dueDate);
       return updateTicketRequest;
     }
   }

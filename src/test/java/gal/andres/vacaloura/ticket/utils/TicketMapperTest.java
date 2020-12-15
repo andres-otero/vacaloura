@@ -2,6 +2,7 @@ package gal.andres.vacaloura.ticket.utils;
 
 import gal.andres.vacaloura.ticket.model.*;
 import gal.andres.vacaloura.ticket.model.request.NewTicketRequest;
+import gal.andres.vacaloura.ticket.model.request.UpdateTicketRequest;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -21,6 +22,7 @@ public class TicketMapperTest {
         .dueDate(LocalDateTime.of(2020, 12, 13, 14, 3))
         .tags(List.of("bug", "test"))
         .type(TicketType.BUG)
+        .stepsReproduction("First step: Create the bug")
         .build();
   }
 
@@ -35,6 +37,7 @@ public class TicketMapperTest {
         .type(TicketType.BUG)
         .status(Status.NEW)
         .votes(0)
+        .stepsReproduction("First step: Create the bug")
         .build();
   }
 
@@ -51,6 +54,7 @@ public class TicketMapperTest {
         .type(TicketType.BUG)
         .status(Status.NEW)
         .votes(0)
+        .stepsReproduction("First step: Create the bug")
         .build();
   }
 
@@ -67,6 +71,38 @@ public class TicketMapperTest {
         .type(TicketType.BUG)
         .status(Status.NEW)
         .votes(0)
+        .stepsReproduction("First step: Create the bug")
+        .build();
+  }
+
+  public UpdateTicketRequest createUpdateTicketRequest(){
+    return UpdateTicketRequest.Builder.builder()
+        .name("Update ticket")
+        .description("updatedTicket")
+        .status(Status.FIXED)
+        .stepsReproduction("reproduction steps")
+        .dueDate(LocalDateTime.of(2020, 12, 15, 14, 3))
+        .priority(Priority.MEDIUM)
+        .version("2.0")
+        .type(TicketType.ENHANCEMENT)
+        .tags(List.of("updated", "enhancement"))
+        .build();
+  }
+
+  public Ticket createExpectedUpdatedTicket(){
+    return Ticket.Builder.builder()
+        .id(1L)
+        .name("Update ticket")
+        .description("updatedTicket")
+        .status(Status.FIXED)
+        .stepsReproduction("reproduction steps")
+        .dueDate(LocalDateTime.of(2020, 12, 15, 14, 3))
+        .priority(Priority.MEDIUM)
+        .version("2.0")
+        .type(TicketType.ENHANCEMENT)
+        .tags(List.of("updated", "enhancement"))
+        .votes(0)
+        .date(LocalDateTime.of(2020, 12, 13, 14, 3))
         .build();
   }
 
@@ -83,6 +119,7 @@ public class TicketMapperTest {
     Assertions.assertEquals(expectedTicket.getTags(), ticket.getTags());
     Assertions.assertEquals(expectedTicket.getVersion(), ticket.getVersion());
     Assertions.assertEquals(expectedTicket.getVotes(), ticket.getVotes());
+    Assertions.assertEquals(expectedTicket.getStepsReproduction(),ticket.getStepsReproduction());
     Assertions.assertNull(ticket.getId());
     Assertions.assertNotNull(ticket.getDate());
   }
@@ -91,5 +128,11 @@ public class TicketMapperTest {
   public void testTicketToDTO() {
     TicketDTO ticketDTO = TicketMapper.ticketToDTO(createPlainTicket());
     Assertions.assertEquals(createExpectedTicketDTO(), ticketDTO);
+  }
+
+  @Test
+  public void testUpdateTicket(){
+    Ticket updatedTicket = TicketMapper.updateTicket(createPlainTicket(),createUpdateTicketRequest());
+    Assertions.assertEquals(createExpectedUpdatedTicket(),updatedTicket);
   }
 }

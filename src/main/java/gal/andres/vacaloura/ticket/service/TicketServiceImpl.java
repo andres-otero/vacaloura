@@ -49,8 +49,8 @@ public class TicketServiceImpl implements TicketService {
   @Override
   public void updateTicket(Long ticketId, UpdateTicketRequest request) {
     Ticket ticket = ticketRepository.findById(ticketId).orElseThrow(IllegalArgumentException::new);
-    ticket.update(request);
-    ticketRepository.save(ticket);
+    Ticket updatedTicket = TicketMapper.updateTicket(ticket,request);
+    ticketRepository.save(updatedTicket);
   }
 
   @Override

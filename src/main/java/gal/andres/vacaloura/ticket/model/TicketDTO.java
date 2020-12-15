@@ -15,6 +15,7 @@ public class TicketDTO {
   private Status status;
   private String version;
   private Integer votes;
+  private String stepsReproduction;
 
   public Long getId() {
     return id;
@@ -104,6 +105,14 @@ public class TicketDTO {
     this.votes = votes;
   }
 
+  public String getStepsReproduction() {
+    return stepsReproduction;
+  }
+
+  public void setStepsReproduction(String stepsReproduction) {
+    this.stepsReproduction = stepsReproduction;
+  }
+
   @Override
   public boolean equals(Object o) {
     if (this == o) return true;
@@ -125,7 +134,10 @@ public class TicketDTO {
     if (status != ticketDTO.status) return false;
     if (version != null ? !version.equals(ticketDTO.version) : ticketDTO.version != null)
       return false;
-    return votes != null ? votes.equals(ticketDTO.votes) : ticketDTO.votes == null;
+    if (votes != null ? !votes.equals(ticketDTO.votes) : ticketDTO.votes != null) return false;
+    return stepsReproduction != null
+        ? stepsReproduction.equals(ticketDTO.stepsReproduction)
+        : ticketDTO.stepsReproduction == null;
   }
 
   @Override
@@ -141,6 +153,7 @@ public class TicketDTO {
     result = 31 * result + (status != null ? status.hashCode() : 0);
     result = 31 * result + (version != null ? version.hashCode() : 0);
     result = 31 * result + (votes != null ? votes.hashCode() : 0);
+    result = 31 * result + (stepsReproduction != null ? stepsReproduction.hashCode() : 0);
     return result;
   }
 
@@ -172,6 +185,9 @@ public class TicketDTO {
         + '\''
         + ", votes="
         + votes
+        + ", stepsReproduction='"
+        + stepsReproduction
+        + '\''
         + '}';
   }
 
@@ -187,6 +203,7 @@ public class TicketDTO {
     private Status status;
     private String version;
     private Integer votes;
+    private String stepsReproduction;
 
     private Builder() {}
 
@@ -249,6 +266,11 @@ public class TicketDTO {
       return this;
     }
 
+    public Builder stepsReproduction(String stepsReproduction) {
+      this.stepsReproduction = stepsReproduction;
+      return this;
+    }
+
     public TicketDTO build() {
       TicketDTO ticketDTO = new TicketDTO();
       ticketDTO.setId(id);
@@ -262,6 +284,7 @@ public class TicketDTO {
       ticketDTO.setStatus(status);
       ticketDTO.setVersion(version);
       ticketDTO.setVotes(votes);
+      ticketDTO.setStepsReproduction(stepsReproduction);
       return ticketDTO;
     }
   }
