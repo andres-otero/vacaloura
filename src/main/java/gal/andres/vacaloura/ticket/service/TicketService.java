@@ -46,8 +46,9 @@ public interface TicketService {
    *
    * @param ticketId Id of the ticket that will be updated
    * @param request {@link UpdateTicketRequest} New information to update the ticket
+   * @return {@link TicketDTO} The updated ticket
    */
-  public void updateTicket(Long ticketId, UpdateTicketRequest request);
+  public TicketDTO updateTicket(Long ticketId, UpdateTicketRequest request);
 
   /**
    * Delete an existing ticket in the database

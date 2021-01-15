@@ -42,15 +42,16 @@ public class TicketServiceImpl implements TicketService {
   @Override
   public TicketDTO createTicket(NewTicketRequest request) {
     Ticket ticket = TicketMapper.requestToTicket(request);
-    ticketRepository.save(ticket);
-    return TicketMapper.ticketToDTO(ticket);
+    Ticket newTicket = ticketRepository.save(ticket);
+    return TicketMapper.ticketToDTO(newTicket);
   }
 
   @Override
-  public void updateTicket(Long ticketId, UpdateTicketRequest request) {
+  public TicketDTO updateTicket(Long ticketId, UpdateTicketRequest request) {
     Ticket ticket = ticketRepository.findById(ticketId).orElseThrow(IllegalArgumentException::new);
-    Ticket updatedTicket = TicketMapper.updateTicket(ticket,request);
+    Ticket updatedTicket = TicketMapper.updateTicket(ticket, request);
     ticketRepository.save(updatedTicket);
+    return TicketMapper.ticketToDTO(updatedTicket);
   }
 
   @Override
