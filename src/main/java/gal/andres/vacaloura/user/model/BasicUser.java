@@ -5,13 +5,13 @@ import javax.persistence.MappedSuperclass;
 import java.util.Objects;
 
 @MappedSuperclass
-public class User {
+public class BasicUser {
   @Id private String name;
   private String password;
 
-  public User() {}
+  public BasicUser() {}
 
-  public User(String name, String password) {
+  public BasicUser(String name, String password) {
     this.name = name;
     this.password = password;
   }
@@ -33,8 +33,8 @@ public class User {
   public boolean equals(Object o) {
     if (this == o) return true;
     if (o == null || getClass() != o.getClass()) return false;
-    User user = (User) o;
-    return Objects.equals(name, user.name) && Objects.equals(password, user.password);
+    BasicUser basicUser = (BasicUser) o;
+    return Objects.equals(name, basicUser.name) && Objects.equals(password, basicUser.password);
   }
 
   @Override

@@ -1,6 +1,6 @@
 package gal.andres.vacaloura.user.controller;
 
-import gal.andres.vacaloura.user.model.User;
+import gal.andres.vacaloura.user.model.BasicUser;
 import gal.andres.vacaloura.user.service.UserService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -20,9 +20,9 @@ public class UserController {
   }
 
   @PostMapping("/sign-up")
-  public ResponseEntity signUp(@RequestBody User user) {
-    userService.createUser(user);
-    URI location = URI.create("/users/" + user.getName());
+  public ResponseEntity<Void> signUp(@RequestBody BasicUser basicUser) {
+    userService.createUser(basicUser);
+    URI location = URI.create("/users/" + basicUser.getName());
     return ResponseEntity.created(location).build();
   }
 }
