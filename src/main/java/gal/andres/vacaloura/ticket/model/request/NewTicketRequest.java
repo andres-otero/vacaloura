@@ -20,8 +20,6 @@ public class NewTicketRequest {
   private String version;
   private String stepsReproduction;
 
-  public NewTicketRequest() {}
-
   public String getName() {
     return name;
   }
