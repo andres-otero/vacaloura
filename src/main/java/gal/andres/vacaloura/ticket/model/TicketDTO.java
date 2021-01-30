@@ -2,6 +2,7 @@ package gal.andres.vacaloura.ticket.model;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Objects;
 
 public class TicketDTO {
   private Long id;
@@ -117,44 +118,36 @@ public class TicketDTO {
   public boolean equals(Object o) {
     if (this == o) return true;
     if (o == null || getClass() != o.getClass()) return false;
-
     TicketDTO ticketDTO = (TicketDTO) o;
-
-    if (id != null ? !id.equals(ticketDTO.id) : ticketDTO.id != null) return false;
-    if (name != null ? !name.equals(ticketDTO.name) : ticketDTO.name != null) return false;
-    if (type != ticketDTO.type) return false;
-    if (priority != ticketDTO.priority) return false;
-    if (date != null ? !date.equals(ticketDTO.date) : ticketDTO.date != null) return false;
-    if (dueDate != null ? !dueDate.equals(ticketDTO.dueDate) : ticketDTO.dueDate != null)
-      return false;
-    if (tags != null ? !tags.equals(ticketDTO.tags) : ticketDTO.tags != null) return false;
-    if (description != null
-        ? !description.equals(ticketDTO.description)
-        : ticketDTO.description != null) return false;
-    if (status != ticketDTO.status) return false;
-    if (version != null ? !version.equals(ticketDTO.version) : ticketDTO.version != null)
-      return false;
-    if (votes != null ? !votes.equals(ticketDTO.votes) : ticketDTO.votes != null) return false;
-    return stepsReproduction != null
-        ? stepsReproduction.equals(ticketDTO.stepsReproduction)
-        : ticketDTO.stepsReproduction == null;
+    return Objects.equals(id, ticketDTO.id)
+        && Objects.equals(name, ticketDTO.name)
+        && type == ticketDTO.type
+        && priority == ticketDTO.priority
+        && Objects.equals(date, ticketDTO.date)
+        && Objects.equals(dueDate, ticketDTO.dueDate)
+        && Objects.equals(tags, ticketDTO.tags)
+        && Objects.equals(description, ticketDTO.description)
+        && status == ticketDTO.status
+        && Objects.equals(version, ticketDTO.version)
+        && Objects.equals(votes, ticketDTO.votes)
+        && Objects.equals(stepsReproduction, ticketDTO.stepsReproduction);
   }
 
   @Override
   public int hashCode() {
-    int result = id != null ? id.hashCode() : 0;
-    result = 31 * result + (name != null ? name.hashCode() : 0);
-    result = 31 * result + (type != null ? type.hashCode() : 0);
-    result = 31 * result + (priority != null ? priority.hashCode() : 0);
-    result = 31 * result + (date != null ? date.hashCode() : 0);
-    result = 31 * result + (dueDate != null ? dueDate.hashCode() : 0);
-    result = 31 * result + (tags != null ? tags.hashCode() : 0);
-    result = 31 * result + (description != null ? description.hashCode() : 0);
-    result = 31 * result + (status != null ? status.hashCode() : 0);
-    result = 31 * result + (version != null ? version.hashCode() : 0);
-    result = 31 * result + (votes != null ? votes.hashCode() : 0);
-    result = 31 * result + (stepsReproduction != null ? stepsReproduction.hashCode() : 0);
-    return result;
+    return Objects.hash(
+        id,
+        name,
+        type,
+        priority,
+        date,
+        dueDate,
+        tags,
+        description,
+        status,
+        version,
+        votes,
+        stepsReproduction);
   }
 
   @Override
@@ -287,5 +280,9 @@ public class TicketDTO {
       ticketDTO.setStepsReproduction(stepsReproduction);
       return ticketDTO;
     }
+  }
+
+  public TicketDTO from(Ticket t) {
+    return Builder.builder().id(t.getId()).build();
   }
 }

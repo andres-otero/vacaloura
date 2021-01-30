@@ -3,6 +3,7 @@ package gal.andres.vacaloura.ticket.model;
 import javax.persistence.*;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Objects;
 
 @Entity
 @Table(name = "ticket")
@@ -25,35 +26,6 @@ public class Ticket {
   @Column private String version;
   @Column private Integer votes;
   @Column private String stepsReproduction;
-
-  public Ticket(
-      Long id,
-      String name,
-      TicketType type,
-      Priority priority,
-      LocalDateTime date,
-      LocalDateTime dueDate,
-      List<String> tags,
-      String description,
-      Status status,
-      String version,
-      Integer votes,
-      String stepsReproduction) {
-    this.id = id;
-    this.name = name;
-    this.type = type;
-    this.priority = priority;
-    this.date = date;
-    this.dueDate = dueDate;
-    this.tags = tags;
-    this.description = description;
-    this.status = status;
-    this.version = version;
-    this.votes = votes;
-    this.stepsReproduction = stepsReproduction;
-  }
-
-  public Ticket() {}
 
   public Long getId() {
     return id;
@@ -189,41 +161,36 @@ public class Ticket {
   public boolean equals(Object o) {
     if (this == o) return true;
     if (o == null || getClass() != o.getClass()) return false;
-
     Ticket ticket = (Ticket) o;
-
-    if (id != null ? !id.equals(ticket.id) : ticket.id != null) return false;
-    if (name != null ? !name.equals(ticket.name) : ticket.name != null) return false;
-    if (type != ticket.type) return false;
-    if (priority != ticket.priority) return false;
-    if (date != null ? !date.equals(ticket.date) : ticket.date != null) return false;
-    if (dueDate != null ? !dueDate.equals(ticket.dueDate) : ticket.dueDate != null) return false;
-    if (tags != null ? !tags.equals(ticket.tags) : ticket.tags != null) return false;
-    if (description != null ? !description.equals(ticket.description) : ticket.description != null)
-      return false;
-    if (status != ticket.status) return false;
-    if (version != null ? !version.equals(ticket.version) : ticket.version != null) return false;
-    if (votes != null ? !votes.equals(ticket.votes) : ticket.votes != null) return false;
-    return stepsReproduction != null
-        ? stepsReproduction.equals(ticket.stepsReproduction)
-        : ticket.stepsReproduction == null;
+    return Objects.equals(id, ticket.id)
+        && Objects.equals(name, ticket.name)
+        && type == ticket.type
+        && priority == ticket.priority
+        && Objects.equals(date, ticket.date)
+        && Objects.equals(dueDate, ticket.dueDate)
+        && Objects.equals(tags, ticket.tags)
+        && Objects.equals(description, ticket.description)
+        && status == ticket.status
+        && Objects.equals(version, ticket.version)
+        && Objects.equals(votes, ticket.votes)
+        && Objects.equals(stepsReproduction, ticket.stepsReproduction);
   }
 
   @Override
   public int hashCode() {
-    int result = id != null ? id.hashCode() : 0;
-    result = 31 * result + (name != null ? name.hashCode() : 0);
-    result = 31 * result + (type != null ? type.hashCode() : 0);
-    result = 31 * result + (priority != null ? priority.hashCode() : 0);
-    result = 31 * result + (date != null ? date.hashCode() : 0);
-    result = 31 * result + (dueDate != null ? dueDate.hashCode() : 0);
-    result = 31 * result + (tags != null ? tags.hashCode() : 0);
-    result = 31 * result + (description != null ? description.hashCode() : 0);
-    result = 31 * result + (status != null ? status.hashCode() : 0);
-    result = 31 * result + (version != null ? version.hashCode() : 0);
-    result = 31 * result + (votes != null ? votes.hashCode() : 0);
-    result = 31 * result + (stepsReproduction != null ? stepsReproduction.hashCode() : 0);
-    return result;
+    return Objects.hash(
+        id,
+        name,
+        type,
+        priority,
+        date,
+        dueDate,
+        tags,
+        description,
+        status,
+        version,
+        votes,
+        stepsReproduction);
   }
 
   public static final class Builder {
