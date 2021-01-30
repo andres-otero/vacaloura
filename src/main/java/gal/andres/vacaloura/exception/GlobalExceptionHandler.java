@@ -11,13 +11,10 @@ import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExcep
 @ControllerAdvice
 public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
 
-
-  @ExceptionHandler({ IllegalArgumentException.class })
+  @ExceptionHandler({IllegalArgumentException.class})
   public ResponseEntity<Object> handleAll(Exception ex, WebRequest request) {
     ApiError apiError =
         new ApiError(HttpStatus.NOT_FOUND, ex.getLocalizedMessage(), "resource not found");
-    return new ResponseEntity<Object>(
-        apiError, new HttpHeaders(), apiError.getStatus());
+    return new ResponseEntity<>(apiError, new HttpHeaders(), apiError.getStatus());
   }
-
 }
