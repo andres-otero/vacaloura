@@ -10,6 +10,8 @@ import java.time.LocalDateTime;
 
 public class TicketMapper {
 
+  private TicketMapper() {}
+
   public static Ticket requestToTicket(NewTicketRequest request) {
     return Ticket.Builder.builder()
         .name(request.getName())
@@ -43,7 +45,7 @@ public class TicketMapper {
         .build();
   }
 
-  public static Ticket updateTicket(Ticket ticket, UpdateTicketRequest updateTicketRequest){
+  public static Ticket updateTicket(Ticket ticket, UpdateTicketRequest updateTicketRequest) {
     ticket.setName(updateTicketRequest.getName());
     ticket.setDescription(updateTicketRequest.getDescription());
     ticket.setTags(updateTicketRequest.getTags());
