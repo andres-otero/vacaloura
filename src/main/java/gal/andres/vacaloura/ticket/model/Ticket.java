@@ -1,5 +1,7 @@
 package gal.andres.vacaloura.ticket.model;
 
+import gal.andres.vacaloura.user.model.ApplicationUser;
+
 import javax.persistence.*;
 import java.time.LocalDateTime;
 import java.util.List;
@@ -26,6 +28,9 @@ public class Ticket {
   @Column private String version;
   @Column private Integer votes;
   @Column private String stepsReproduction;
+  @OneToOne private ApplicationUser assignedTo;
+  @OneToOne private ApplicationUser owner;
+  @OneToMany private List<ApplicationUser> followers;
 
   public Long getId() {
     return id;
@@ -123,6 +128,30 @@ public class Ticket {
     this.stepsReproduction = stepsReproduction;
   }
 
+  public ApplicationUser getAssignedTo() {
+    return assignedTo;
+  }
+
+  public void setAssignedTo(ApplicationUser assignedTo) {
+    this.assignedTo = assignedTo;
+  }
+
+  public ApplicationUser getOwner() {
+    return owner;
+  }
+
+  public void setOwner(ApplicationUser owner) {
+    this.owner = owner;
+  }
+
+  public List<ApplicationUser> getFollowers() {
+    return followers;
+  }
+
+  public void setFollowers(List<ApplicationUser> followers) {
+    this.followers = followers;
+  }
+
   @Override
   public String toString() {
     return "Ticket{"
@@ -154,6 +183,12 @@ public class Ticket {
         + ", stepsReproduction='"
         + stepsReproduction
         + '\''
+        + ", assignedTo="
+        + assignedTo
+        + ", owner="
+        + owner
+        + ", followers="
+        + followers
         + '}';
   }
 
@@ -173,7 +208,10 @@ public class Ticket {
         && status == ticket.status
         && Objects.equals(version, ticket.version)
         && Objects.equals(votes, ticket.votes)
-        && Objects.equals(stepsReproduction, ticket.stepsReproduction);
+        && Objects.equals(stepsReproduction, ticket.stepsReproduction)
+        && Objects.equals(assignedTo, ticket.assignedTo)
+        && Objects.equals(owner, ticket.owner)
+        && Objects.equals(followers, ticket.followers);
   }
 
   @Override
@@ -190,7 +228,10 @@ public class Ticket {
         status,
         version,
         votes,
-        stepsReproduction);
+        stepsReproduction,
+        assignedTo,
+        owner,
+        followers);
   }
 
   public static final class Builder {
@@ -206,6 +247,9 @@ public class Ticket {
     private String version;
     private Integer votes;
     private String stepsReproduction;
+    private ApplicationUser assignedTo;
+    private ApplicationUser owner;
+    private List<ApplicationUser> followers;
 
     private Builder() {}
 
@@ -273,6 +317,21 @@ public class Ticket {
       return this;
     }
 
+    public Builder assignedTo(ApplicationUser assignedTo) {
+      this.assignedTo = assignedTo;
+      return this;
+    }
+
+    public Builder owner(ApplicationUser owner) {
+      this.owner = owner;
+      return this;
+    }
+
+    public Builder followers(List<ApplicationUser> followers) {
+      this.followers = followers;
+      return this;
+    }
+
     public Ticket build() {
       Ticket ticket = new Ticket();
       ticket.setId(id);
@@ -287,6 +346,9 @@ public class Ticket {
       ticket.setVersion(version);
       ticket.setVotes(votes);
       ticket.setStepsReproduction(stepsReproduction);
+      ticket.setAssignedTo(assignedTo);
+      ticket.setOwner(owner);
+      ticket.setFollowers(followers);
       return ticket;
     }
   }

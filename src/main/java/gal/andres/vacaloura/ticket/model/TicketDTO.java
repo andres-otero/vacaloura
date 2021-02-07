@@ -1,5 +1,7 @@
 package gal.andres.vacaloura.ticket.model;
 
+import gal.andres.vacaloura.user.model.ApplicationUser;
+
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Objects;
@@ -17,6 +19,7 @@ public class TicketDTO {
   private String version;
   private Integer votes;
   private String stepsReproduction;
+  private ApplicationUser assignedTo;
 
   public Long getId() {
     return id;
@@ -114,40 +117,12 @@ public class TicketDTO {
     this.stepsReproduction = stepsReproduction;
   }
 
-  @Override
-  public boolean equals(Object o) {
-    if (this == o) return true;
-    if (o == null || getClass() != o.getClass()) return false;
-    TicketDTO ticketDTO = (TicketDTO) o;
-    return Objects.equals(id, ticketDTO.id)
-        && Objects.equals(name, ticketDTO.name)
-        && type == ticketDTO.type
-        && priority == ticketDTO.priority
-        && Objects.equals(date, ticketDTO.date)
-        && Objects.equals(dueDate, ticketDTO.dueDate)
-        && Objects.equals(tags, ticketDTO.tags)
-        && Objects.equals(description, ticketDTO.description)
-        && status == ticketDTO.status
-        && Objects.equals(version, ticketDTO.version)
-        && Objects.equals(votes, ticketDTO.votes)
-        && Objects.equals(stepsReproduction, ticketDTO.stepsReproduction);
+  public ApplicationUser getAssignedTo() {
+    return assignedTo;
   }
 
-  @Override
-  public int hashCode() {
-    return Objects.hash(
-        id,
-        name,
-        type,
-        priority,
-        date,
-        dueDate,
-        tags,
-        description,
-        status,
-        version,
-        votes,
-        stepsReproduction);
+  public void setAssignedTo(ApplicationUser assignedTo) {
+    this.assignedTo = assignedTo;
   }
 
   @Override
@@ -181,7 +156,47 @@ public class TicketDTO {
         + ", stepsReproduction='"
         + stepsReproduction
         + '\''
+        + ", assignedTo="
+        + assignedTo
         + '}';
+  }
+
+  @Override
+  public boolean equals(Object o) {
+    if (this == o) return true;
+    if (o == null || getClass() != o.getClass()) return false;
+    TicketDTO ticketDTO = (TicketDTO) o;
+    return Objects.equals(id, ticketDTO.id)
+        && Objects.equals(name, ticketDTO.name)
+        && type == ticketDTO.type
+        && priority == ticketDTO.priority
+        && Objects.equals(date, ticketDTO.date)
+        && Objects.equals(dueDate, ticketDTO.dueDate)
+        && Objects.equals(tags, ticketDTO.tags)
+        && Objects.equals(description, ticketDTO.description)
+        && status == ticketDTO.status
+        && Objects.equals(version, ticketDTO.version)
+        && Objects.equals(votes, ticketDTO.votes)
+        && Objects.equals(stepsReproduction, ticketDTO.stepsReproduction)
+        && Objects.equals(assignedTo, ticketDTO.assignedTo);
+  }
+
+  @Override
+  public int hashCode() {
+    return Objects.hash(
+        id,
+        name,
+        type,
+        priority,
+        date,
+        dueDate,
+        tags,
+        description,
+        status,
+        version,
+        votes,
+        stepsReproduction,
+        assignedTo);
   }
 
   public static final class Builder {
@@ -197,6 +212,7 @@ public class TicketDTO {
     private String version;
     private Integer votes;
     private String stepsReproduction;
+    private ApplicationUser assignedTo;
 
     private Builder() {}
 
@@ -264,6 +280,11 @@ public class TicketDTO {
       return this;
     }
 
+    public Builder assignedTo(ApplicationUser assignedTo) {
+      this.assignedTo = assignedTo;
+      return this;
+    }
+
     public TicketDTO build() {
       TicketDTO ticketDTO = new TicketDTO();
       ticketDTO.setId(id);
@@ -278,11 +299,8 @@ public class TicketDTO {
       ticketDTO.setVersion(version);
       ticketDTO.setVotes(votes);
       ticketDTO.setStepsReproduction(stepsReproduction);
+      ticketDTO.setAssignedTo(assignedTo);
       return ticketDTO;
     }
-  }
-
-  public TicketDTO from(Ticket t) {
-    return Builder.builder().id(t.getId()).build();
   }
 }
