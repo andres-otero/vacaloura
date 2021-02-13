@@ -56,20 +56,27 @@ public class TicketController {
   }
 
   @PutMapping("/{id}")
-  public ResponseEntity updateTicket(
+  public ResponseEntity<Void> updateTicket(
       @PathVariable long id, @RequestBody UpdateTicketRequest updateTicketRequest) {
     ticketService.updateTicket(id, updateTicketRequest);
     return ResponseEntity.noContent().build();
   }
 
+  @PatchMapping("/{id}")
+  public ResponseEntity<Void> assignTicketToUser(
+      @PathVariable long id, @RequestBody String username) {
+    ticketService.assignTicketToUser(id, username);
+    return ResponseEntity.noContent().build();
+  }
+
   @DeleteMapping("/{id}")
-  public ResponseEntity deleteTicket(@PathVariable long id) {
+  public ResponseEntity<Void> deleteTicket(@PathVariable long id) {
     ticketService.deleteTicket(id);
     return ResponseEntity.noContent().build();
   }
 
   @DeleteMapping("/{id}/votes")
-  public ResponseEntity deleteVoteTicket(@PathVariable long id) {
+  public ResponseEntity<Void> deleteVoteTicket(@PathVariable long id) {
     ticketService.deleteTicketVote(id);
     return ResponseEntity.noContent().build();
   }

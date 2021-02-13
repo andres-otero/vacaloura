@@ -4,12 +4,16 @@ import gal.andres.vacaloura.ticket.model.*;
 import gal.andres.vacaloura.ticket.model.request.NewTicketRequest;
 import gal.andres.vacaloura.ticket.model.request.UpdateTicketRequest;
 import gal.andres.vacaloura.ticket.repository.TicketRepository;
+import gal.andres.vacaloura.user.model.ApplicationUser;
+import gal.andres.vacaloura.user.repository.UserRepository;
 import gal.andres.vacaloura.utils.ParseUtils;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.domain.Sort;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
@@ -19,7 +23,9 @@ import static org.mockito.Mockito.*;
 public class TicketServiceTest {
 
   private TicketRepository ticketRepository = mock(TicketRepository.class);
-  private final TicketService ticketService = new TicketServiceImpl(ticketRepository);
+  private UserRepository userRepository = mock(UserRepository.class);
+  private final TicketService ticketService =
+      new TicketServiceImpl(ticketRepository, userRepository);
 
   private Ticket getFirstTicket() {
     return Ticket.Builder.builder()
@@ -118,6 +124,10 @@ public class TicketServiceTest {
         .votes(0)
         .type(TicketType.FEATURE_REQUEST)
         .build();
+  }
+
+  private ApplicationUser getApplicationUser() {
+    return new ApplicationUser("vacaloura_user", "pass", Collections.emptyList());
   }
 
   @Test
@@ -225,5 +235,32 @@ public class TicketServiceTest {
     when(ticketRepository.existsById(ticketId)).thenReturn(false);
     Assertions.assertThrows(
         IllegalArgumentException.class, () -> ticketService.deleteTicket(ticketId));
+  }
+
+  @Test
+  public void shouldAssignUserToTicket() {
+    long ticketId = 1L;
+    String username = "vacaloura_user";
+    when(ticketRepository.findById(ticketId)).thenReturn(Optional.of(getFirstTicket()));
+    when(userRepository.findByName(username)).thenReturn(getApplicationUser());
+    Assertions.assertEquals(
+        getApplicationUser(), ticketService.assignTicketToUser(ticketId, username).getAssignedTo());
+  }
+
+  @Test
+  public void shouldNotFindTicket() {
+    when(ticketRepository.findById(any())).thenReturn(Optional.empty());
+    Assertions.assertThrows(
+        IllegalArgumentException.class,
+        () -> ticketService.assignTicketToUser(56L, "vacaloura_user"));
+  }
+
+  @Test
+  public void shouldNotFindUser() {
+    when(ticketRepository.findById(any())).thenReturn(Optional.of(getFirstTicket()));
+    when(userRepository.findByName(any())).thenReturn(null);
+    Assertions.assertThrows(
+        UsernameNotFoundException.class,
+        () -> ticketService.assignTicketToUser(56L, "vacaloura_user"));
   }
 }

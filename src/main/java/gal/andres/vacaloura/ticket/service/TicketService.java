@@ -51,6 +51,15 @@ public interface TicketService {
   public TicketDTO updateTicket(Long ticketId, UpdateTicketRequest request);
 
   /**
+   * Assign a user to a ticket
+   *
+   * @param ticketId Id of the ticket that will be assigned
+   * @param username Username of the user assigned
+   * @return Ticket with the user assigned
+   */
+  public TicketDTO assignTicketToUser(Long ticketId, String username);
+
+  /**
    * Delete an existing ticket in the database
    *
    * @param ticketId id of the ticket to be deleted

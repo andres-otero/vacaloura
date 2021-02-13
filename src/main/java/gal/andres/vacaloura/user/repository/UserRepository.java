@@ -5,6 +5,6 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
 public interface UserRepository extends JpaRepository<ApplicationUser, String> {
-    @Query("SELECT a FROM ApplicationUser a JOIN FETCH a.roles WHERE a.name = (:name)")
-    public ApplicationUser findByName(String name);
+  @Query("SELECT a FROM ApplicationUser a JOIN FETCH a.roles WHERE a.name = (:name)")
+  public ApplicationUser findByName(String name);
 }

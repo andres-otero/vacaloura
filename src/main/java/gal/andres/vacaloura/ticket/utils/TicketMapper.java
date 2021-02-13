@@ -42,6 +42,7 @@ public class TicketMapper {
         .version(ticket.getVersion())
         .votes(ticket.getVotes())
         .stepsReproduction(ticket.getStepsReproduction())
+        .assignedTo(ticket.getAssignedTo())
         .build();
   }
 

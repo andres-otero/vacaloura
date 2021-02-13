@@ -5,8 +5,11 @@ import gal.andres.vacaloura.ticket.model.request.NewTicketRequest;
 import gal.andres.vacaloura.ticket.model.request.UpdateTicketRequest;
 import gal.andres.vacaloura.ticket.repository.TicketRepository;
 import gal.andres.vacaloura.ticket.utils.TicketMapper;
+import gal.andres.vacaloura.user.model.ApplicationUser;
+import gal.andres.vacaloura.user.repository.UserRepository;
 import gal.andres.vacaloura.utils.ParseUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -15,10 +18,12 @@ import java.util.stream.Collectors;
 @Service
 public class TicketServiceImpl implements TicketService {
   private final TicketRepository ticketRepository;
+  private final UserRepository userRepository;
 
   @Autowired
-  public TicketServiceImpl(TicketRepository ticketRepository) {
+  public TicketServiceImpl(TicketRepository ticketRepository, UserRepository userRepository) {
     this.ticketRepository = ticketRepository;
+    this.userRepository = userRepository;
   }
 
   @Override
@@ -52,6 +57,18 @@ public class TicketServiceImpl implements TicketService {
     Ticket updatedTicket = TicketMapper.updateTicket(ticket, request);
     ticketRepository.save(updatedTicket);
     return TicketMapper.ticketToDTO(updatedTicket);
+  }
+
+  @Override
+  public TicketDTO assignTicketToUser(Long ticketId, String username) {
+    Ticket ticket = ticketRepository.findById(ticketId).orElseThrow(IllegalArgumentException::new);
+    ApplicationUser user = userRepository.findByName(username);
+    if (user == null) {
+      throw new UsernameNotFoundException(username);
+    }
+    ticket.setAssignedTo(user);
+    ticketRepository.save(ticket);
+    return TicketMapper.ticketToDTO(ticket);
   }
 
   @Override
