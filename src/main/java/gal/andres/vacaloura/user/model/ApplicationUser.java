@@ -9,8 +9,7 @@ import java.util.Objects;
 @Entity
 @Table(name = "application_user")
 public class ApplicationUser extends BasicUser {
-  @ElementCollection
-  private List<Role> roles;
+  @ElementCollection private List<Role> roles;
 
   public ApplicationUser() {}
 
@@ -21,6 +20,10 @@ public class ApplicationUser extends BasicUser {
 
   public List<Role> getRoles() {
     return roles;
+  }
+
+  public void setRoles(List<Role> roles) {
+    this.roles = roles;
   }
 
   @Override

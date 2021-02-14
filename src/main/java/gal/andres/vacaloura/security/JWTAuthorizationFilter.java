@@ -2,8 +2,6 @@ package gal.andres.vacaloura.security;
 
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
-import gal.andres.vacaloura.user.service.UserDetailsServiceImpl;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -21,7 +19,8 @@ import static gal.andres.vacaloura.security.SecurityConstants.*;
 public class JWTAuthorizationFilter extends BasicAuthenticationFilter {
   private UserDetailsService userDetailsService;
 
-  public JWTAuthorizationFilter(AuthenticationManager authenticationManager, UserDetailsService userDetailsService) {
+  public JWTAuthorizationFilter(
+      AuthenticationManager authenticationManager, UserDetailsService userDetailsService) {
     super(authenticationManager);
     this.userDetailsService = userDetailsService;
   }
