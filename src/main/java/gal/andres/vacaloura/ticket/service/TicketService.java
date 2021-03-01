@@ -70,14 +70,17 @@ public interface TicketService {
    * Add a vote to a ticket
    *
    * @param ticketId Id of the ticket
+   * @param username Username of the voter
    * @return Number of ticket votes
    */
-  public Integer voteTicket(Long ticketId);
+  public int voteTicket(Long ticketId, String username);
 
   /**
    * Deletes a vote from a ticket
    *
    * @param ticketId Id of the ticket
+   * @param username Username of the voter
+   * @return Number of ticket votes
    */
-  public void deleteTicketVote(Long ticketId);
+  public int deleteTicketVote(Long ticketId, String username);
 }

@@ -26,7 +26,7 @@ public class Ticket {
   @Column private String description;
   @Column private Status status;
   @Column private String version;
-  @Column private Integer votes;
+  @Column private VoteCounter votes;
   @Column private String stepsReproduction;
   @OneToOne private ApplicationUser assignedTo;
   @OneToOne private ApplicationUser owner;
@@ -113,11 +113,19 @@ public class Ticket {
   }
 
   public Integer getVotes() {
-    return votes;
+    return votes.getVotes();
   }
 
-  public void setVotes(Integer votes) {
+  public void setVotes(VoteCounter votes) {
     this.votes = votes;
+  }
+
+  public void vote(String username) {
+    this.votes.vote(username);
+  }
+
+  public void removeVote(String username) {
+    this.votes.removeVote(username);
   }
 
   public String getStepsReproduction() {
@@ -179,7 +187,7 @@ public class Ticket {
         + version
         + '\''
         + ", votes="
-        + votes
+        + votes.getVotes()
         + ", stepsReproduction='"
         + stepsReproduction
         + '\''
@@ -207,7 +215,7 @@ public class Ticket {
         && Objects.equals(description, ticket.description)
         && status == ticket.status
         && Objects.equals(version, ticket.version)
-        && Objects.equals(votes, ticket.votes)
+        && Objects.equals(votes.getVoters(), ticket.votes.getVoters())
         && Objects.equals(stepsReproduction, ticket.stepsReproduction)
         && Objects.equals(assignedTo, ticket.assignedTo)
         && Objects.equals(owner, ticket.owner)
@@ -227,7 +235,7 @@ public class Ticket {
         description,
         status,
         version,
-        votes,
+        votes.getVoters(),
         stepsReproduction,
         assignedTo,
         owner,
@@ -245,7 +253,6 @@ public class Ticket {
     private String description;
     private Status status;
     private String version;
-    private Integer votes;
     private String stepsReproduction;
     private ApplicationUser assignedTo;
     private ApplicationUser owner;
@@ -307,11 +314,6 @@ public class Ticket {
       return this;
     }
 
-    public Builder votes(Integer votes) {
-      this.votes = votes;
-      return this;
-    }
-
     public Builder stepsReproduction(String stepsReproduction) {
       this.stepsReproduction = stepsReproduction;
       return this;
@@ -344,7 +346,7 @@ public class Ticket {
       ticket.setDescription(description);
       ticket.setStatus(status);
       ticket.setVersion(version);
-      ticket.setVotes(votes);
+      ticket.setVotes(new VoteCounter());
       ticket.setStepsReproduction(stepsReproduction);
       ticket.setAssignedTo(assignedTo);
       ticket.setOwner(owner);

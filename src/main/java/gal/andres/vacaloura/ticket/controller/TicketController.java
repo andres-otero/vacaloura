@@ -7,8 +7,10 @@ import gal.andres.vacaloura.ticket.model.TicketType;
 import gal.andres.vacaloura.ticket.model.request.NewTicketRequest;
 import gal.andres.vacaloura.ticket.model.request.UpdateTicketRequest;
 import gal.andres.vacaloura.ticket.service.TicketService;
+import gal.andres.vacaloura.user.model.ApplicationUser;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
 import java.net.URI;
@@ -50,7 +52,9 @@ public class TicketController {
 
   @PostMapping("{id}/votes")
   public ResponseEntity<Integer> voteTicket(@PathVariable long id) {
-    Integer votes = ticketService.voteTicket(id);
+    ApplicationUser user =
+        (ApplicationUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+    Integer votes = ticketService.voteTicket(id, user.getName());
     URI location = URI.create("/tickets/" + id + "/votes");
     return ResponseEntity.created(location).body(votes);
   }
@@ -77,7 +81,9 @@ public class TicketController {
 
   @DeleteMapping("/{id}/votes")
   public ResponseEntity<Void> deleteVoteTicket(@PathVariable long id) {
-    ticketService.deleteTicketVote(id);
+    ApplicationUser user =
+        (ApplicationUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+    ticketService.deleteTicketVote(id, user.getName());
     return ResponseEntity.noContent().build();
   }
 }

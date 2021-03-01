@@ -35,7 +35,6 @@ class TicketServiceTest {
         .status(Status.NEW)
         .tags(List.of("new", "bug"))
         .version("1.0")
-        .votes(0)
         .type(TicketType.BUG)
         .build();
   }
@@ -61,7 +60,6 @@ class TicketServiceTest {
         .status(Status.ASSIGNED)
         .tags(List.of("old", "enhancement"))
         .version("1.0")
-        .votes(1)
         .type(TicketType.ENHANCEMENT)
         .build();
   }
@@ -74,8 +72,8 @@ class TicketServiceTest {
         .status(Status.ASSIGNED)
         .tags(List.of("old", "enhancement"))
         .version("1.0")
-        .votes(1)
         .type(TicketType.ENHANCEMENT)
+        .votes(0)
         .build();
   }
 
@@ -108,7 +106,6 @@ class TicketServiceTest {
         .status(Status.FIXED)
         .tags(List.of("updated"))
         .version("2.0")
-        .votes(0)
         .type(TicketType.FEATURE_REQUEST)
         .build();
   }
@@ -262,5 +259,49 @@ class TicketServiceTest {
     Assertions.assertThrows(
         UsernameNotFoundException.class,
         () -> ticketService.assignTicketToUser(56L, "vacaloura_user"));
+  }
+
+  @Test
+  void shouldVoteForTicket() {
+    when(ticketRepository.findById(any())).thenReturn(Optional.of(firstTicket()));
+    when(userRepository.save(any())).thenReturn(firstTicket());
+    int votes = ticketService.voteTicket(1L, "username");
+    Assertions.assertEquals(1, votes);
+  }
+
+  @Test
+  void shouldNotVoteTwiceForTicketWithTheSameUser() {
+    when(ticketRepository.findById(any())).thenReturn(Optional.of(firstTicket()));
+    when(userRepository.save(any())).thenReturn(firstTicket());
+    ticketService.voteTicket(1L, "username");
+    int votes = ticketService.voteTicket(1L, "username");
+    Assertions.assertEquals(1, votes);
+  }
+
+  @Test
+  void shouldVoteTwiceForTicketWithTheDifferentUser() {
+    when(ticketRepository.findById(any())).thenReturn(Optional.of(firstTicket()));
+    when(userRepository.save(any())).thenReturn(firstTicket());
+    ticketService.voteTicket(1L, "username");
+    int votes = ticketService.voteTicket(1L, "vacaloura_user");
+    Assertions.assertEquals(2, votes);
+  }
+
+  @Test
+  void shouldDeleteVoteForTicket() {
+    when(ticketRepository.findById(any())).thenReturn(Optional.of(firstTicket()));
+    when(userRepository.save(any())).thenReturn(firstTicket());
+    ticketService.voteTicket(1L, "username");
+    int votes = ticketService.deleteTicketVote(1L, "username");
+    Assertions.assertEquals(0, votes);
+  }
+
+  @Test
+  void shouldNotDeleteVoteNotCastedForTicket() {
+    when(ticketRepository.findById(any())).thenReturn(Optional.of(firstTicket()));
+    when(userRepository.save(any())).thenReturn(firstTicket());
+    ticketService.voteTicket(1L, "vacaloura_user");
+    int votes = ticketService.deleteTicketVote(1L, "username");
+    Assertions.assertEquals(1, votes);
   }
 }

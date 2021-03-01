@@ -81,17 +81,18 @@ public class TicketServiceImpl implements TicketService {
   }
 
   @Override
-  public Integer voteTicket(Long ticketId) { // TODO Establish one vote for user and ticket
+  public int voteTicket(Long ticketId, String username) {
     Ticket ticket = ticketRepository.findById(ticketId).orElseThrow(IllegalArgumentException::new);
-    ticket.setVotes(ticket.getVotes() + 1);
+    ticket.vote(username);
     ticketRepository.save(ticket);
     return ticket.getVotes();
   }
 
   @Override
-  public void deleteTicketVote(Long ticketId) { // TODO One downvote for user and ticket
+  public int deleteTicketVote(Long ticketId, String username) {
     Ticket ticket = ticketRepository.findById(ticketId).orElseThrow(IllegalArgumentException::new);
-    ticket.setVotes(ticket.getVotes() - 1);
+    ticket.removeVote(username);
     ticketRepository.save(ticket);
+    return ticket.getVotes();
   }
 }
