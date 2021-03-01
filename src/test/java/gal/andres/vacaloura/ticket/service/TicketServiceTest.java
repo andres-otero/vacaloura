@@ -20,14 +20,14 @@ import java.util.Optional;
 import static org.mockito.Mockito.*;
 
 @SpringBootTest
-public class TicketServiceTest {
+class TicketServiceTest {
 
   private TicketRepository ticketRepository = mock(TicketRepository.class);
   private UserRepository userRepository = mock(UserRepository.class);
   private final TicketService ticketService =
       new TicketServiceImpl(ticketRepository, userRepository);
 
-  private Ticket getFirstTicket() {
+  private Ticket firstTicket() {
     return Ticket.Builder.builder()
         .id(1L)
         .name("First")
@@ -40,7 +40,7 @@ public class TicketServiceTest {
         .build();
   }
 
-  private TicketDTO getFirstTicketDTO() {
+  private TicketDTO firstTicketDTO() {
     return TicketDTO.Builder.builder()
         .id(1L)
         .name("First")
@@ -53,7 +53,7 @@ public class TicketServiceTest {
         .build();
   }
 
-  private Ticket getSecondTicket() {
+  private Ticket secondTicket() {
     return Ticket.Builder.builder()
         .id(2L)
         .name("Second")
@@ -66,7 +66,7 @@ public class TicketServiceTest {
         .build();
   }
 
-  private TicketDTO getSecondTicketDTO() {
+  private TicketDTO secondTicketDTO() {
     return TicketDTO.Builder.builder()
         .id(2L)
         .name("Second")
@@ -79,7 +79,7 @@ public class TicketServiceTest {
         .build();
   }
 
-  private UpdateTicketRequest getUpdateTicketRequest() {
+  private UpdateTicketRequest updateTicketRequest() {
     return UpdateTicketRequest.Builder.builder()
         .name("Updated")
         .priority(Priority.VERY_HIGH)
@@ -90,7 +90,7 @@ public class TicketServiceTest {
         .build();
   }
 
-  private NewTicketRequest getNewTicketRequest() {
+  private NewTicketRequest newTicketRequest() {
     return NewTicketRequest.Builder.builder()
         .name("First")
         .priority(Priority.HIGH)
@@ -100,7 +100,7 @@ public class TicketServiceTest {
         .build();
   }
 
-  private Ticket getUpdatedTicket() {
+  private Ticket updatedTicket() {
     return Ticket.Builder.builder()
         .id(1L)
         .name("Updated")
@@ -113,7 +113,7 @@ public class TicketServiceTest {
         .build();
   }
 
-  private TicketDTO getUpdateTicketDTO() {
+  private TicketDTO updatedTicketDTO() {
     return TicketDTO.Builder.builder()
         .id(1L)
         .name("Updated")
@@ -126,70 +126,70 @@ public class TicketServiceTest {
         .build();
   }
 
-  private ApplicationUser getApplicationUser() {
+  private ApplicationUser applicationUser() {
     return new ApplicationUser("vacaloura_user", "pass", Collections.emptyList());
   }
 
   @Test
-  public void shouldFilterTicketsByType() {
+  void shouldFilterTicketsByType() {
     when(ticketRepository.findAll(Sort.by(Sort.Order.desc("id"))))
-        .thenReturn(List.of(getFirstTicket(), getSecondTicket()));
+        .thenReturn(List.of(firstTicket(), secondTicket()));
     List<TicketDTO> tickets = ticketService.getTickets(TicketType.BUG, null, null, null, null);
-    Assertions.assertEquals(getFirstTicketDTO(), tickets.get(0));
+    Assertions.assertEquals(firstTicketDTO(), tickets.get(0));
   }
 
   @Test
-  public void shouldFilterTicketsByPriority() {
+  void shouldFilterTicketsByPriority() {
     when(ticketRepository.findAll(Sort.by(Sort.Order.desc("id"))))
-        .thenReturn(List.of(getFirstTicket(), getSecondTicket()));
+        .thenReturn(List.of(firstTicket(), secondTicket()));
     List<TicketDTO> tickets = ticketService.getTickets(null, Priority.LOW, null, null, null);
-    Assertions.assertEquals(getSecondTicketDTO(), tickets.get(0));
+    Assertions.assertEquals(secondTicketDTO(), tickets.get(0));
   }
 
   @Test
-  public void shouldFilterTicketsByTag() {
+  void shouldFilterTicketsByTag() {
     when(ticketRepository.findAll(Sort.by(Sort.Order.desc("id"))))
-        .thenReturn(List.of(getFirstTicket(), getSecondTicket()));
+        .thenReturn(List.of(firstTicket(), secondTicket()));
     List<TicketDTO> tickets = ticketService.getTickets(null, null, "new", null, null);
-    Assertions.assertEquals(getFirstTicketDTO(), tickets.get(0));
+    Assertions.assertEquals(firstTicketDTO(), tickets.get(0));
   }
 
   @Test
-  public void shouldFilterTicketsByStatus() {
+  void shouldFilterTicketsByStatus() {
     when(ticketRepository.findAll(Sort.by(Sort.Order.desc("id"))))
-        .thenReturn(List.of(getFirstTicket(), getSecondTicket()));
+        .thenReturn(List.of(firstTicket(), secondTicket()));
     List<TicketDTO> tickets = ticketService.getTickets(null, null, null, Status.ASSIGNED, null);
-    Assertions.assertEquals(getSecondTicketDTO(), tickets.get(0));
+    Assertions.assertEquals(secondTicketDTO(), tickets.get(0));
   }
 
   @Test
-  public void shouldSortTicketsByOneParameter() {
+  void shouldSortTicketsByOneParameter() {
     when(ticketRepository.findAll(ParseUtils.getSortFromQuery("-name")))
-        .thenReturn(List.of(getSecondTicket(), getFirstTicket()));
+        .thenReturn(List.of(secondTicket(), firstTicket()));
     List<TicketDTO> tickets = ticketService.getTickets(null, null, null, null, "-name");
-    Assertions.assertEquals(getSecondTicketDTO(), tickets.get(0));
-    Assertions.assertEquals(getFirstTicketDTO(), tickets.get(1));
+    Assertions.assertEquals(secondTicketDTO(), tickets.get(0));
+    Assertions.assertEquals(firstTicketDTO(), tickets.get(1));
   }
 
   @Test
-  public void shouldSortTicketByMultipleParameters() {
+  void shouldSortTicketByMultipleParameters() {
     when(ticketRepository.findAll(ParseUtils.getSortFromQuery("version,votes")))
-        .thenReturn(List.of(getSecondTicket(), getFirstTicket()));
+        .thenReturn(List.of(secondTicket(), firstTicket()));
     List<TicketDTO> tickets = ticketService.getTickets(null, null, null, null, "version,votes");
-    Assertions.assertEquals(getSecondTicketDTO(), tickets.get(0));
-    Assertions.assertEquals(getFirstTicketDTO(), tickets.get(1));
+    Assertions.assertEquals(secondTicketDTO(), tickets.get(0));
+    Assertions.assertEquals(firstTicketDTO(), tickets.get(1));
   }
 
   @Test
-  public void shouldGetTicketById() {
+  void shouldGetTicketById() {
     long ticketId = 1L;
-    when(ticketRepository.findById(ticketId)).thenReturn(Optional.of(getFirstTicket()));
+    when(ticketRepository.findById(ticketId)).thenReturn(Optional.of(firstTicket()));
     TicketDTO ticketDTO = ticketService.getTicket(ticketId);
-    Assertions.assertEquals(getFirstTicketDTO(), ticketDTO);
+    Assertions.assertEquals(firstTicketDTO(), ticketDTO);
   }
 
   @Test
-  public void shouldNotGetTicketById() {
+  void shouldNotGetTicketById() {
     long ticketId = 1L;
     when(ticketRepository.findById(ticketId)).thenReturn(Optional.empty());
     Assertions.assertThrows(
@@ -197,31 +197,31 @@ public class TicketServiceTest {
   }
 
   @Test
-  public void shouldCreateTicket() {
-    when(ticketRepository.save(any())).thenReturn(getFirstTicket());
-    Assertions.assertEquals(getFirstTicketDTO(), ticketService.createTicket(getNewTicketRequest()));
+  void shouldCreateTicket() {
+    when(ticketRepository.save(any())).thenReturn(firstTicket());
+    Assertions.assertEquals(firstTicketDTO(), ticketService.createTicket(newTicketRequest()));
   }
 
   @Test
-  public void shouldUpdateTicketById() {
+  void shouldUpdateTicketById() {
     long ticketId = 1L;
-    when(ticketRepository.findById(ticketId)).thenReturn(Optional.of(getFirstTicket()));
-    when(ticketRepository.save(getUpdatedTicket())).thenReturn(getUpdatedTicket());
+    when(ticketRepository.findById(ticketId)).thenReturn(Optional.of(firstTicket()));
+    when(ticketRepository.save(updatedTicket())).thenReturn(updatedTicket());
     Assertions.assertEquals(
-        getUpdateTicketDTO(), ticketService.updateTicket(ticketId, getUpdateTicketRequest()));
+        updatedTicketDTO(), ticketService.updateTicket(ticketId, updateTicketRequest()));
   }
 
   @Test
-  public void shouldNotUpdateTicketById() {
+  void shouldNotUpdateTicketById() {
     long ticketId = 1L;
     when(ticketRepository.findById(ticketId)).thenReturn(Optional.empty());
     Assertions.assertThrows(
         IllegalArgumentException.class,
-        () -> ticketService.updateTicket(ticketId, getUpdateTicketRequest()));
+        () -> ticketService.updateTicket(ticketId, updateTicketRequest()));
   }
 
   @Test
-  public void shouldDeleteTicketById() {
+  void shouldDeleteTicketById() {
     long ticketId = 1L;
     when(ticketRepository.existsById(ticketId)).thenReturn(true);
     doNothing().when(ticketRepository).deleteById(ticketId);
@@ -230,7 +230,7 @@ public class TicketServiceTest {
   }
 
   @Test
-  public void shouldNotDeleteTicketById() {
+  void shouldNotDeleteTicketById() {
     long ticketId = 1L;
     when(ticketRepository.existsById(ticketId)).thenReturn(false);
     Assertions.assertThrows(
@@ -238,17 +238,17 @@ public class TicketServiceTest {
   }
 
   @Test
-  public void shouldAssignUserToTicket() {
+  void shouldAssignUserToTicket() {
     long ticketId = 1L;
     String username = "vacaloura_user";
-    when(ticketRepository.findById(ticketId)).thenReturn(Optional.of(getFirstTicket()));
-    when(userRepository.findByName(username)).thenReturn(getApplicationUser());
+    when(ticketRepository.findById(ticketId)).thenReturn(Optional.of(firstTicket()));
+    when(userRepository.findByName(username)).thenReturn(applicationUser());
     Assertions.assertEquals(
-        getApplicationUser(), ticketService.assignTicketToUser(ticketId, username).getAssignedTo());
+        applicationUser(), ticketService.assignTicketToUser(ticketId, username).getAssignedTo());
   }
 
   @Test
-  public void shouldNotFindTicket() {
+  void shouldNotFindTicket() {
     when(ticketRepository.findById(any())).thenReturn(Optional.empty());
     Assertions.assertThrows(
         IllegalArgumentException.class,
@@ -256,8 +256,8 @@ public class TicketServiceTest {
   }
 
   @Test
-  public void shouldNotFindUser() {
-    when(ticketRepository.findById(any())).thenReturn(Optional.of(getFirstTicket()));
+  void shouldNotFindUser() {
+    when(ticketRepository.findById(any())).thenReturn(Optional.of(firstTicket()));
     when(userRepository.findByName(any())).thenReturn(null);
     Assertions.assertThrows(
         UsernameNotFoundException.class,
