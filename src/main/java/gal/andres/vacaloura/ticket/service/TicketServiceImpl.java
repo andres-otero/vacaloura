@@ -34,29 +34,29 @@ public class TicketServiceImpl implements TicketService {
         .filter(t -> priority == null || t.getPriority() == priority)
         .filter(t -> tag == null || t.getTags().contains(tag))
         .filter(t -> status == null || t.getStatus() == status)
-        .map(TicketMapper::ticketToDTO)
+        .map(TicketMapper::ticketDTO)
         .collect(Collectors.toList());
   }
 
   @Override
   public TicketDTO getTicket(Long ticketId) {
     Ticket ticket = ticketRepository.findById(ticketId).orElseThrow(IllegalArgumentException::new);
-    return TicketMapper.ticketToDTO(ticket);
+    return TicketMapper.ticketDTO(ticket);
   }
 
   @Override
   public TicketDTO createTicket(NewTicketRequest request) {
     Ticket ticket = TicketMapper.requestToTicket(request);
     Ticket newTicket = ticketRepository.save(ticket);
-    return TicketMapper.ticketToDTO(newTicket);
+    return TicketMapper.ticketDTO(newTicket);
   }
 
   @Override
   public TicketDTO updateTicket(Long ticketId, UpdateTicketRequest request) {
     Ticket ticket = ticketRepository.findById(ticketId).orElseThrow(IllegalArgumentException::new);
-    Ticket updatedTicket = TicketMapper.updateTicket(ticket, request);
+    Ticket updatedTicket = TicketMapper.updatedTicket(ticket, request);
     ticketRepository.save(updatedTicket);
-    return TicketMapper.ticketToDTO(updatedTicket);
+    return TicketMapper.ticketDTO(updatedTicket);
   }
 
   @Override
@@ -68,7 +68,7 @@ public class TicketServiceImpl implements TicketService {
     }
     ticket.setAssignedTo(user);
     ticketRepository.save(ticket);
-    return TicketMapper.ticketToDTO(ticket);
+    return TicketMapper.ticketDTO(ticket);
   }
 
   @Override
