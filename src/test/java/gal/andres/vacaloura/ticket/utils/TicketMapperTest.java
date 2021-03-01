@@ -11,9 +11,9 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 @SpringBootTest
-public class TicketMapperTest {
+class TicketMapperTest {
 
-  public NewTicketRequest createNewTicketRequest() {
+  private NewTicketRequest newTicketRequest() {
     return NewTicketRequest.Builder.builder()
         .name("Test bug")
         .description("A test bug")
@@ -26,7 +26,7 @@ public class TicketMapperTest {
         .build();
   }
 
-  public Ticket createExpectedTicket() {
+  private Ticket expectedTicket() {
     return Ticket.Builder.builder()
         .name("Test bug")
         .description("A test bug")
@@ -36,12 +36,11 @@ public class TicketMapperTest {
         .tags(List.of("bug", "test"))
         .type(TicketType.BUG)
         .status(Status.NEW)
-        .votes(0)
         .stepsReproduction("First step: Create the bug")
         .build();
   }
 
-  public TicketDTO createExpectedTicketDTO() {
+  private TicketDTO expectedTicketDTO() {
     return TicketDTO.Builder.builder()
         .id(1L)
         .name("Test bug")
@@ -53,12 +52,12 @@ public class TicketMapperTest {
         .tags(List.of("bug", "test"))
         .type(TicketType.BUG)
         .status(Status.NEW)
-        .votes(0)
         .stepsReproduction("First step: Create the bug")
+        .votes(0)
         .build();
   }
 
-  public Ticket createPlainTicket() {
+  private Ticket ticket() {
     return Ticket.Builder.builder()
         .id(1L)
         .name("Test bug")
@@ -70,12 +69,11 @@ public class TicketMapperTest {
         .tags(List.of("bug", "test"))
         .type(TicketType.BUG)
         .status(Status.NEW)
-        .votes(0)
         .stepsReproduction("First step: Create the bug")
         .build();
   }
 
-  public UpdateTicketRequest createUpdateTicketRequest(){
+  private UpdateTicketRequest updateTicketRequest() {
     return UpdateTicketRequest.Builder.builder()
         .name("Update ticket")
         .description("updatedTicket")
@@ -89,7 +87,7 @@ public class TicketMapperTest {
         .build();
   }
 
-  public Ticket createExpectedUpdatedTicket(){
+  private Ticket updatedTicket() {
     return Ticket.Builder.builder()
         .id(1L)
         .name("Update ticket")
@@ -107,9 +105,9 @@ public class TicketMapperTest {
   }
 
   @Test
-  public void testNewRequestToTicket() {
-    Ticket ticket = TicketMapper.requestToTicket(createNewTicketRequest());
-    Ticket expectedTicket = createExpectedTicket();
+  void shouldMapNewTicketRequestToTicket() {
+    Ticket ticket = TicketMapper.requestToTicket(newTicketRequest());
+    Ticket expectedTicket = expectedTicket();
     Assertions.assertEquals(expectedTicket.getName(), ticket.getName());
     Assertions.assertEquals(expectedTicket.getDescription(), ticket.getDescription());
     Assertions.assertEquals(expectedTicket.getPriority(), ticket.getPriority());
@@ -119,20 +117,20 @@ public class TicketMapperTest {
     Assertions.assertEquals(expectedTicket.getTags(), ticket.getTags());
     Assertions.assertEquals(expectedTicket.getVersion(), ticket.getVersion());
     Assertions.assertEquals(expectedTicket.getVotes(), ticket.getVotes());
-    Assertions.assertEquals(expectedTicket.getStepsReproduction(),ticket.getStepsReproduction());
+    Assertions.assertEquals(expectedTicket.getStepsReproduction(), ticket.getStepsReproduction());
     Assertions.assertNull(ticket.getId());
     Assertions.assertNotNull(ticket.getDate());
   }
 
   @Test
-  public void testTicketToDTO() {
-    TicketDTO ticketDTO = TicketMapper.ticketToDTO(createPlainTicket());
-    Assertions.assertEquals(createExpectedTicketDTO(), ticketDTO);
+  void shouldMapTicketToTicketDTO() {
+    TicketDTO ticketDTO = TicketMapper.ticketDTO(ticket());
+    Assertions.assertEquals(expectedTicketDTO(), ticketDTO);
   }
 
   @Test
-  public void testUpdateTicket(){
-    Ticket updatedTicket = TicketMapper.updateTicket(createPlainTicket(),createUpdateTicketRequest());
-    Assertions.assertEquals(createExpectedUpdatedTicket(),updatedTicket);
+  void shouldMapUpdateTicketRequestToTicket() {
+    Ticket updatedTicket = TicketMapper.updatedTicket(ticket(), updateTicketRequest());
+    Assertions.assertEquals(updatedTicket(), updatedTicket);
   }
 }

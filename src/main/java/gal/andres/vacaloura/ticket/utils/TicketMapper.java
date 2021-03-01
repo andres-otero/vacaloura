@@ -3,8 +3,10 @@ package gal.andres.vacaloura.ticket.utils;
 import gal.andres.vacaloura.ticket.model.Status;
 import gal.andres.vacaloura.ticket.model.Ticket;
 import gal.andres.vacaloura.ticket.model.TicketDTO;
+import gal.andres.vacaloura.ticket.model.VoteCounter;
 import gal.andres.vacaloura.ticket.model.request.NewTicketRequest;
 import gal.andres.vacaloura.ticket.model.request.UpdateTicketRequest;
+import org.modelmapper.ModelMapper;
 
 import java.time.LocalDateTime;
 
@@ -13,40 +15,20 @@ public class TicketMapper {
   private TicketMapper() {}
 
   public static Ticket requestToTicket(NewTicketRequest request) {
-    return Ticket.Builder.builder()
-        .name(request.getName())
-        .description(request.getDescription())
-        .type(request.getType())
-        .priority(request.getPriority())
-        .date(LocalDateTime.now())
-        .dueDate(request.getDueDate())
-        .tags(request.getTags())
-        .stepsReproduction(request.getStepsReproduction())
-        .status(Status.NEW)
-        .version(request.getVersion())
-        .votes(0)
-        .build();
+    ModelMapper modelMapper = new ModelMapper();
+    Ticket ticket = modelMapper.map(request, Ticket.class);
+    ticket.setDate(LocalDateTime.now());
+    ticket.setStatus(Status.NEW);
+    ticket.setVotes(new VoteCounter());
+    return ticket;
   }
 
-  public static TicketDTO ticketToDTO(Ticket ticket) {
-    return TicketDTO.Builder.builder()
-        .id(ticket.getId())
-        .name(ticket.getName())
-        .description(ticket.getDescription())
-        .type(ticket.getType())
-        .priority(ticket.getPriority())
-        .date(ticket.getDate())
-        .dueDate(ticket.getDueDate())
-        .status(ticket.getStatus())
-        .tags(ticket.getTags())
-        .version(ticket.getVersion())
-        .votes(ticket.getVotes())
-        .stepsReproduction(ticket.getStepsReproduction())
-        .assignedTo(ticket.getAssignedTo())
-        .build();
+  public static TicketDTO ticketDTO(Ticket ticket) {
+    ModelMapper modelMapper = new ModelMapper();
+    return modelMapper.map(ticket, TicketDTO.class);
   }
 
-  public static Ticket updateTicket(Ticket ticket, UpdateTicketRequest updateTicketRequest) {
+  public static Ticket updatedTicket(Ticket ticket, UpdateTicketRequest updateTicketRequest) {
     ticket.setName(updateTicketRequest.getName());
     ticket.setDescription(updateTicketRequest.getDescription());
     ticket.setTags(updateTicketRequest.getTags());
