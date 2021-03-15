@@ -45,15 +45,17 @@ public class TicketServiceImpl implements TicketService {
   }
 
   @Override
-  public TicketDTO createTicket(NewTicketRequest request) {
-    Ticket ticket = TicketMapper.requestToTicket(request);
+  public TicketDTO createTicket(NewTicketRequest request, ApplicationUser user) {
+    Ticket ticket = TicketMapper.requestToTicket(request, user);
     Ticket newTicket = ticketRepository.save(ticket);
     return TicketMapper.ticketDTO(newTicket);
   }
 
   @Override
-  public TicketDTO updateTicket(Long ticketId, UpdateTicketRequest request) {
+  public TicketDTO updateTicket(Long ticketId, UpdateTicketRequest request, String username) {
     Ticket ticket = ticketRepository.findById(ticketId).orElseThrow(IllegalArgumentException::new);
+    ticket.setHistory(
+        ticket.getHistory() + " Updated by " + username + " with the following changes: ");
     Ticket updatedTicket = TicketMapper.updatedTicket(ticket, request);
     ticketRepository.save(updatedTicket);
     return TicketMapper.ticketDTO(updatedTicket);

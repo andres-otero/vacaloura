@@ -28,7 +28,7 @@ class TicketServiceTest {
       new TicketServiceImpl(ticketRepository, userRepository);
 
   private Ticket firstTicket() {
-    return Ticket.Builder.builder()
+    return Ticket.Builder.aTicket()
         .id(1L)
         .name("First")
         .priority(Priority.HIGH)
@@ -40,7 +40,7 @@ class TicketServiceTest {
   }
 
   private TicketDTO firstTicketDTO() {
-    return TicketDTO.Builder.builder()
+    return TicketDTO.Builder.aTicketDTO()
         .id(1L)
         .name("First")
         .priority(Priority.HIGH)
@@ -53,7 +53,7 @@ class TicketServiceTest {
   }
 
   private Ticket secondTicket() {
-    return Ticket.Builder.builder()
+    return Ticket.Builder.aTicket()
         .id(2L)
         .name("Second")
         .priority(Priority.LOW)
@@ -65,7 +65,7 @@ class TicketServiceTest {
   }
 
   private TicketDTO secondTicketDTO() {
-    return TicketDTO.Builder.builder()
+    return TicketDTO.Builder.aTicketDTO()
         .id(2L)
         .name("Second")
         .priority(Priority.LOW)
@@ -99,7 +99,7 @@ class TicketServiceTest {
   }
 
   private Ticket updatedTicket() {
-    return Ticket.Builder.builder()
+    return Ticket.Builder.aTicket()
         .id(1L)
         .name("Updated")
         .priority(Priority.VERY_HIGH)
@@ -111,7 +111,7 @@ class TicketServiceTest {
   }
 
   private TicketDTO updatedTicketDTO() {
-    return TicketDTO.Builder.builder()
+    return TicketDTO.Builder.aTicketDTO()
         .id(1L)
         .name("Updated")
         .priority(Priority.VERY_HIGH)
@@ -196,7 +196,8 @@ class TicketServiceTest {
   @Test
   void shouldCreateTicket() {
     when(ticketRepository.save(any())).thenReturn(firstTicket());
-    Assertions.assertEquals(firstTicketDTO(), ticketService.createTicket(newTicketRequest()));
+    Assertions.assertEquals(
+        firstTicketDTO(), ticketService.createTicket(newTicketRequest(), new ApplicationUser()));
   }
 
   @Test
@@ -205,7 +206,8 @@ class TicketServiceTest {
     when(ticketRepository.findById(ticketId)).thenReturn(Optional.of(firstTicket()));
     when(ticketRepository.save(updatedTicket())).thenReturn(updatedTicket());
     Assertions.assertEquals(
-        updatedTicketDTO(), ticketService.updateTicket(ticketId, updateTicketRequest()));
+        updatedTicketDTO(),
+        ticketService.updateTicket(ticketId, updateTicketRequest(), "username"));
   }
 
   @Test
@@ -214,7 +216,7 @@ class TicketServiceTest {
     when(ticketRepository.findById(ticketId)).thenReturn(Optional.empty());
     Assertions.assertThrows(
         IllegalArgumentException.class,
-        () -> ticketService.updateTicket(ticketId, updateTicketRequest()));
+        () -> ticketService.updateTicket(ticketId, updateTicketRequest(), "username"));
   }
 
   @Test

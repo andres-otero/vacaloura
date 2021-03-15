@@ -28,6 +28,7 @@ public class Ticket {
   @Column private String version;
   @Column private VoteCounter votes;
   @Column private String stepsReproduction;
+  @Column private String history;
   @OneToOne private ApplicationUser assignedTo;
   @OneToOne private ApplicationUser owner;
   @OneToMany private List<ApplicationUser> followers;
@@ -37,6 +38,7 @@ public class Ticket {
   }
 
   public void setId(Long id) {
+    this.history += generateHistoryLine("id", this.id.toString(), id.toString());
     this.id = id;
   }
 
@@ -45,6 +47,7 @@ public class Ticket {
   }
 
   public void setName(String name) {
+    this.history += generateHistoryLine("name", this.name, name);
     this.name = name;
   }
 
@@ -53,6 +56,7 @@ public class Ticket {
   }
 
   public void setType(TicketType type) {
+    this.history += generateHistoryLine("type", this.type.toString(), type.toString());
     this.type = type;
   }
 
@@ -61,6 +65,7 @@ public class Ticket {
   }
 
   public void setPriority(Priority priority) {
+    this.history += generateHistoryLine("priority", this.priority.toString(), priority.toString());
     this.priority = priority;
   }
 
@@ -69,6 +74,7 @@ public class Ticket {
   }
 
   public void setDate(LocalDateTime date) {
+    this.history += generateHistoryLine("date", this.date.toString(), date.toString());
     this.date = date;
   }
 
@@ -77,6 +83,7 @@ public class Ticket {
   }
 
   public void setDueDate(LocalDateTime dueDate) {
+    this.history += generateHistoryLine("dueDate", this.dueDate.toString(), dueDate.toString());
     this.dueDate = dueDate;
   }
 
@@ -85,6 +92,7 @@ public class Ticket {
   }
 
   public void setTags(List<String> tags) {
+    this.history += generateHistoryLine("tags", this.tags.toString(), tags.toString());
     this.tags = tags;
   }
 
@@ -93,6 +101,8 @@ public class Ticket {
   }
 
   public void setDescription(String description) {
+    this.history +=
+        generateHistoryLine("description", this.description.toString(), description.toString());
     this.description = description;
   }
 
@@ -101,6 +111,7 @@ public class Ticket {
   }
 
   public void setStatus(Status status) {
+    this.history += generateHistoryLine("status", this.status.toString(), status.toString());
     this.status = status;
   }
 
@@ -109,6 +120,7 @@ public class Ticket {
   }
 
   public void setVersion(String version) {
+    this.history += generateHistoryLine("version", this.version.toString(), version.toString());
     this.version = version;
   }
 
@@ -121,10 +133,12 @@ public class Ticket {
   }
 
   public void vote(String username) {
+    this.history += username + " added a vote";
     this.votes.vote(username);
   }
 
   public void removeVote(String username) {
+    this.history += username + " removed a vote";
     this.votes.removeVote(username);
   }
 
@@ -133,6 +147,9 @@ public class Ticket {
   }
 
   public void setStepsReproduction(String stepsReproduction) {
+    this.history +=
+        generateHistoryLine(
+            "stepsReproduction", this.stepsReproduction.toString(), stepsReproduction.toString());
     this.stepsReproduction = stepsReproduction;
   }
 
@@ -141,6 +158,8 @@ public class Ticket {
   }
 
   public void setAssignedTo(ApplicationUser assignedTo) {
+    this.history +=
+        generateHistoryLine("assignedTo", this.assignedTo.toString(), assignedTo.toString());
     this.assignedTo = assignedTo;
   }
 
@@ -149,6 +168,7 @@ public class Ticket {
   }
 
   public void setOwner(ApplicationUser owner) {
+    this.history += generateHistoryLine("owner", this.owner.toString(), owner.toString());
     this.owner = owner;
   }
 
@@ -157,7 +177,25 @@ public class Ticket {
   }
 
   public void setFollowers(List<ApplicationUser> followers) {
+    this.history +=
+        generateHistoryLine("followers", this.followers.toString(), followers.toString());
     this.followers = followers;
+  }
+
+  public String getHistory() {
+    return history;
+  }
+
+  public void setHistory(String history) {
+    this.history = history;
+  }
+
+  public String generateHistoryLine(String fieldName, String oldValue, String newValue) {
+    if (oldValue.equals(newValue)) {
+      return "";
+    } else {
+      return fieldName + ". Old value:" + oldValue + " -> New value:" + newValue;
+    }
   }
 
   @Override
@@ -187,9 +225,12 @@ public class Ticket {
         + version
         + '\''
         + ", votes="
-        + votes.getVotes()
+        + votes
         + ", stepsReproduction='"
         + stepsReproduction
+        + '\''
+        + ", history='"
+        + history
         + '\''
         + ", assignedTo="
         + assignedTo
@@ -215,8 +256,9 @@ public class Ticket {
         && Objects.equals(description, ticket.description)
         && status == ticket.status
         && Objects.equals(version, ticket.version)
-        && Objects.equals(votes.getVoters(), ticket.votes.getVoters())
+        && Objects.equals(votes, ticket.votes)
         && Objects.equals(stepsReproduction, ticket.stepsReproduction)
+        && Objects.equals(history, ticket.history)
         && Objects.equals(assignedTo, ticket.assignedTo)
         && Objects.equals(owner, ticket.owner)
         && Objects.equals(followers, ticket.followers);
@@ -235,8 +277,9 @@ public class Ticket {
         description,
         status,
         version,
-        votes.getVoters(),
+        votes,
         stepsReproduction,
+        history,
         assignedTo,
         owner,
         followers);
@@ -253,6 +296,7 @@ public class Ticket {
     private String description;
     private Status status;
     private String version;
+    private VoteCounter votes;
     private String stepsReproduction;
     private ApplicationUser assignedTo;
     private ApplicationUser owner;
@@ -260,7 +304,7 @@ public class Ticket {
 
     private Builder() {}
 
-    public static Builder builder() {
+    public static Builder aTicket() {
       return new Builder();
     }
 
@@ -314,6 +358,11 @@ public class Ticket {
       return this;
     }
 
+    public Builder votes(VoteCounter votes) {
+      this.votes = votes;
+      return this;
+    }
+
     public Builder stepsReproduction(String stepsReproduction) {
       this.stepsReproduction = stepsReproduction;
       return this;
@@ -346,8 +395,9 @@ public class Ticket {
       ticket.setDescription(description);
       ticket.setStatus(status);
       ticket.setVersion(version);
-      ticket.setVotes(new VoteCounter());
+      ticket.setVotes(votes);
       ticket.setStepsReproduction(stepsReproduction);
+      ticket.setHistory("");
       ticket.setAssignedTo(assignedTo);
       ticket.setOwner(owner);
       ticket.setFollowers(followers);

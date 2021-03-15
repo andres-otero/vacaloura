@@ -4,7 +4,6 @@ import gal.andres.vacaloura.user.model.ApplicationUser;
 
 import java.time.LocalDateTime;
 import java.util.List;
-import java.util.Objects;
 
 public class TicketDTO {
   private Long id;
@@ -20,6 +19,7 @@ public class TicketDTO {
   private Integer votes;
   private String stepsReproduction;
   private ApplicationUser assignedTo;
+  private String history;
 
   public Long getId() {
     return id;
@@ -125,6 +125,14 @@ public class TicketDTO {
     this.assignedTo = assignedTo;
   }
 
+  public String getHistory() {
+    return history;
+  }
+
+  public void setHistory(String history) {
+    this.history = history;
+  }
+
   @Override
   public String toString() {
     return "TicketDTO{"
@@ -158,45 +166,10 @@ public class TicketDTO {
         + '\''
         + ", assignedTo="
         + assignedTo
+        + ", history='"
+        + history
+        + '\''
         + '}';
-  }
-
-  @Override
-  public boolean equals(Object o) {
-    if (this == o) return true;
-    if (o == null || getClass() != o.getClass()) return false;
-    TicketDTO ticketDTO = (TicketDTO) o;
-    return Objects.equals(id, ticketDTO.id)
-        && Objects.equals(name, ticketDTO.name)
-        && type == ticketDTO.type
-        && priority == ticketDTO.priority
-        && Objects.equals(date, ticketDTO.date)
-        && Objects.equals(dueDate, ticketDTO.dueDate)
-        && Objects.equals(tags, ticketDTO.tags)
-        && Objects.equals(description, ticketDTO.description)
-        && status == ticketDTO.status
-        && Objects.equals(version, ticketDTO.version)
-        && Objects.equals(votes, ticketDTO.votes)
-        && Objects.equals(stepsReproduction, ticketDTO.stepsReproduction)
-        && Objects.equals(assignedTo, ticketDTO.assignedTo);
-  }
-
-  @Override
-  public int hashCode() {
-    return Objects.hash(
-        id,
-        name,
-        type,
-        priority,
-        date,
-        dueDate,
-        tags,
-        description,
-        status,
-        version,
-        votes,
-        stepsReproduction,
-        assignedTo);
   }
 
   public static final class Builder {
@@ -213,10 +186,11 @@ public class TicketDTO {
     private Integer votes;
     private String stepsReproduction;
     private ApplicationUser assignedTo;
+    private String history;
 
     private Builder() {}
 
-    public static Builder builder() {
+    public static Builder aTicketDTO() {
       return new Builder();
     }
 
@@ -285,6 +259,11 @@ public class TicketDTO {
       return this;
     }
 
+    public Builder history(String history) {
+      this.history = history;
+      return this;
+    }
+
     public TicketDTO build() {
       TicketDTO ticketDTO = new TicketDTO();
       ticketDTO.setId(id);
@@ -300,6 +279,7 @@ public class TicketDTO {
       ticketDTO.setVotes(votes);
       ticketDTO.setStepsReproduction(stepsReproduction);
       ticketDTO.setAssignedTo(assignedTo);
+      ticketDTO.setHistory(history);
       return ticketDTO;
     }
   }

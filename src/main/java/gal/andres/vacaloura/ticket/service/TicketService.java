@@ -6,6 +6,7 @@ import gal.andres.vacaloura.ticket.model.TicketDTO;
 import gal.andres.vacaloura.ticket.model.TicketType;
 import gal.andres.vacaloura.ticket.model.request.NewTicketRequest;
 import gal.andres.vacaloura.ticket.model.request.UpdateTicketRequest;
+import gal.andres.vacaloura.user.model.ApplicationUser;
 
 import java.util.List;
 
@@ -37,18 +38,20 @@ public interface TicketService {
    * Process a ticket request to save a new ticket in the database
    *
    * @param request Ticket request to process
+   * @param user User that creates the ticket
    * @return {@link TicketDTO} The created ticket
    */
-  public TicketDTO createTicket(NewTicketRequest request);
+  public TicketDTO createTicket(NewTicketRequest request, ApplicationUser user);
 
   /**
    * Updates an existing ticket in the database
    *
    * @param ticketId Id of the ticket that will be updated
    * @param request {@link UpdateTicketRequest} New information to update the ticket
+   * @param username Username of the user that made the request
    * @return {@link TicketDTO} The updated ticket
    */
-  public TicketDTO updateTicket(Long ticketId, UpdateTicketRequest request);
+  public TicketDTO updateTicket(Long ticketId, UpdateTicketRequest request, String username);
 
   /**
    * Assign a user to a ticket

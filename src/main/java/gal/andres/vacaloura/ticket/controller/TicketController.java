@@ -45,7 +45,9 @@ public class TicketController {
 
   @PostMapping
   public ResponseEntity<TicketDTO> createTicket(@RequestBody NewTicketRequest newTicketRequest) {
-    TicketDTO ticket = ticketService.createTicket(newTicketRequest);
+    ApplicationUser user =
+        (ApplicationUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+    TicketDTO ticket = ticketService.createTicket(newTicketRequest, user);
     URI location = URI.create("/tickets/" + ticket.getId());
     return ResponseEntity.created(location).body(ticket);
   }
@@ -62,7 +64,9 @@ public class TicketController {
   @PutMapping("/{id}")
   public ResponseEntity<Void> updateTicket(
       @PathVariable long id, @RequestBody UpdateTicketRequest updateTicketRequest) {
-    ticketService.updateTicket(id, updateTicketRequest);
+    ApplicationUser user =
+        (ApplicationUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+    ticketService.updateTicket(id, updateTicketRequest, user.getName());
     return ResponseEntity.noContent().build();
   }
 
